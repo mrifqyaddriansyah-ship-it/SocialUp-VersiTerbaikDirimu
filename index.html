@@ -1,0 +1,1757 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SocialUp – Versi Terbaik Dirimu</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   VARIABLES & RESET
+═══════════════════════════════════════ */
+:root {
+  --indigo: #5B5EF4;
+  --indigo-light: #7C7FF7;
+  --indigo-dark: #3E41D1;
+  --teal: #0EA9A0;
+  --amber: #F59E0B;
+  --rose: #F43F5E;
+  --green: #10B981;
+  --bg: #F0F1FF;
+  --card: #FFFFFF;
+  --text: #1A1A3E;
+  --muted: #7A7A99;
+  --border: #E8E8F4;
+  --sidebar-w: 240px;
+  --radius: 20px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{height:100%;scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s}
+
+/* DARK MODE — apply to html so all vars cascade */
+body.dark {
+  --bg: #0D0D1A;
+  --card: #1A1A2E;
+  --text: #E8E8FF;
+  --muted: #9090B0;
+  --border: #2A2A45;
+}
+
+/* ═══════════════════════════════════════
+   ONBOARDING / AUTH SCREENS (mobile-style centered)
+═══════════════════════════════════════ */
+.screen{display:none;min-height:100vh;flex-direction:column;align-items:center;justify-content:center;background:var(--bg)}
+.screen.active{display:flex}
+#s-splash{background:linear-gradient(160deg,#3A3DC8 0%,#5B5EF4 40%,#8B5CF6 80%,#C084FC 100%);position:relative;overflow:hidden;gap:0;text-align:center;color:#fff}
+.splash-bg-circle{position:absolute;border-radius:50%;background:rgba(255,255,255,.06)}
+.splash-logo{width:96px;height:96px;background:#fff;border-radius:28px;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;box-shadow:0 16px 48px rgba(0,0,0,.25);animation:popIn .6s cubic-bezier(.34,1.56,.64,1)}
+.splash-logo i{font-size:2.8rem;background:linear-gradient(135deg,var(--indigo),#8B5CF6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.splash-title{font-family:'Syne',sans-serif;font-size:3.5rem;font-weight:800;letter-spacing:-2px;line-height:1;margin-bottom:14px;animation:fadeUp .6s .2s both}
+.splash-sub{font-size:.95rem;opacity:.8;max-width:280px;line-height:1.8;margin:0 auto 40px;animation:fadeUp .6s .3s both}
+.btn-splash{background:#fff;color:var(--indigo);font-weight:700;border:none;border-radius:50px;padding:16px 56px;font-size:1.05rem;cursor:pointer;box-shadow:0 8px 32px rgba(0,0,0,.2);font-family:'Plus Jakarta Sans',sans-serif;animation:fadeUp .6s .4s both;transition:.2s}
+.btn-splash:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(0,0,0,.3)}
+@keyframes popIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes fadeUp{from{transform:translateY(20px);opacity:0}to{transform:none;opacity:1}}
+
+/* Centered card for onboarding/auth */
+.screen-card{background:var(--card);border-radius:28px;padding:48px 40px;width:100%;max-width:480px;box-shadow:0 8px 48px rgba(91,94,244,.12);animation:fadeUp .4s ease}
+#s-onboarding,#s-comfort,#s-register,#s-login,#s-verify,#s-profile-info,#s-goals,#s-prefs{background:var(--bg)}
+
+/* ONBOARDING */
+.ob-container{display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center}
+.ob-dots{display:flex;gap:6px;justify-content:center}
+.ob-dot{height:6px;border-radius:3px;background:var(--border);transition:.4s}
+.ob-dot.active{background:var(--indigo);width:28px}
+.ob-dot:not(.active){width:6px}
+.ob-illus-wrap{width:160px;height:160px;border-radius:50%;background:linear-gradient(135deg,#EEF0FF,#E8E8FF);display:flex;align-items:center;justify-content:center;font-size:5rem;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.ob-title{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:var(--text)}
+.ob-desc{color:var(--muted);font-size:.92rem;max-width:320px;line-height:1.8}
+.ob-footer{display:flex;justify-content:space-between;align-items:center;width:100%;max-width:480px;margin-top:8px}
+.btn-skip{background:none;border:none;color:var(--muted);font-size:.88rem;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif}
+.btn-next{background:var(--indigo);color:#fff;border:none;border-radius:50px;padding:13px 32px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:.2s;font-size:.9rem}
+.btn-next:hover{background:var(--indigo-dark)}
+
+/* COMFORT */
+.comfort-emojis{display:flex;gap:14px;justify-content:center}
+.comfort-emoji{font-size:2.2rem;cursor:pointer;border-radius:50%;padding:12px;transition:.2s;border:2px solid transparent;line-height:1}
+.comfort-emoji:hover,.comfort-emoji.selected{border-color:var(--indigo);background:#EEF0FF;transform:scale(1.2)}
+.comfort-labels{display:flex;justify-content:space-between;width:100%;max-width:320px;font-size:.75rem;color:var(--muted)}
+
+/* FORM ELEMENTS */
+.auth-logo{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--indigo);text-align:center}
+.auth-title{font-size:1.4rem;font-weight:700;text-align:center;color:var(--text)}
+.auth-subtitle{font-size:.86rem;color:var(--muted);text-align:center;margin-top:-8px}
+.form-group{width:100%;position:relative}
+.form-group i.fi{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:1rem;pointer-events:none}
+.auth-input{width:100%;border:2px solid var(--border);border-radius:14px;padding:13px 16px 13px 42px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;outline:none;transition:.2s;color:var(--text);background:var(--card)}
+.auth-input:focus{border-color:var(--indigo);box-shadow:0 0 0 4px rgba(91,94,244,.1)}
+.auth-input.no-icon{padding-left:16px}
+.btn-primary{width:100%;background:linear-gradient(135deg,var(--indigo),var(--indigo-dark));color:#fff;border:none;border-radius:50px;padding:15px;font-weight:700;font-size:1rem;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:.2s;box-shadow:0 4px 20px rgba(91,94,244,.35)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(91,94,244,.45)}
+.auth-switch{font-size:.85rem;color:var(--muted);cursor:pointer;text-align:center}
+.auth-switch span{color:var(--indigo);font-weight:700}
+.tab-row{display:flex;background:var(--bg);border-radius:12px;padding:4px;gap:4px;width:100%}
+.tab-btn{flex:1;padding:10px;border:none;background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;cursor:pointer;transition:.2s;border-radius:9px;font-size:.84rem;color:var(--muted)}
+.tab-btn.active{background:var(--card);color:var(--indigo);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.strength-bar{width:100%;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.strength-fill{height:4px;border-radius:2px;transition:.4s}
+.input-hint{font-size:.73rem;color:var(--muted)}
+
+/* OTP */
+.otp-row{display:flex;gap:10px;justify-content:center}
+.otp-input{width:52px;height:60px;border:2px solid var(--border);border-radius:12px;text-align:center;font-size:1.5rem;font-weight:700;outline:none;transition:.2s;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);background:var(--card)}
+.otp-input:focus{border-color:var(--indigo);box-shadow:0 0 0 4px rgba(91,94,244,.1)}
+.otp-input.filled{border-color:var(--indigo);background:#EEF0FF}
+body.dark .otp-input.filled{background:#2A2A45}
+.resend-btn{background:none;border:none;color:var(--indigo);font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;font-size:.86rem}
+.resend-btn:disabled{color:var(--muted);cursor:default}
+
+/* GOAL CARDS */
+.goal-card{width:100%;border:2px solid var(--border);border-radius:16px;padding:16px 18px;cursor:pointer;transition:.25s;display:flex;align-items:center;gap:14px;background:var(--card)}
+.goal-card.selected,.goal-card:hover{border-color:var(--indigo);background:#EEF0FF}
+body.dark .goal-card.selected,body.dark .goal-card:hover{background:#2A2A45}
+.goal-icon{font-size:1.6rem;width:44px;text-align:center}
+.goal-text strong{display:block;font-size:.9rem;font-weight:700;color:var(--text)}
+.goal-text span{font-size:.78rem;color:var(--muted)}
+.goal-check{margin-left:auto;width:22px;height:22px;border-radius:50%;border:2px solid var(--border);transition:.2s;flex-shrink:0}
+.goal-card.selected .goal-check{background:var(--indigo);border-color:var(--indigo);display:flex;align-items:center;justify-content:center}
+.goal-card.selected .goal-check::after{content:'✓';color:#fff;font-size:.7rem;font-weight:800}
+
+/* TOGGLE */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;width:100%;padding:13px 0;border-bottom:1px solid var(--border)}
+.toggle-label{font-size:.9rem;font-weight:600;display:flex;align-items:center;gap:10px;color:var(--text)}
+.toggle-label i{color:var(--indigo)}
+.toggle-switch{position:relative;width:48px;height:26px;display:inline-block;flex-shrink:0}
+.toggle-switch input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;background:#DDD;border-radius:50px;cursor:pointer;transition:.3s}
+.toggle-switch input:checked+.toggle-slider{background:var(--indigo)}
+.toggle-slider::before{content:'';position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;left:3px;top:3px;transition:.3s;box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.toggle-switch input:checked+.toggle-slider::before{left:25px}
+
+/* AVATAR */
+.avatar-upload{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--indigo),#8B5CF6);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;border:4px solid #EEF0FF}
+.avatar-upload i{color:#fff;font-size:2rem}
+.avatar-badge{position:absolute;bottom:0;right:0;width:28px;height:28px;background:var(--indigo);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid var(--card)}
+.avatar-badge i{font-size:.7rem;color:#fff}
+.slider-wrap{width:100%}
+.slider-wrap input[type=range]{width:100%;accent-color:var(--indigo)}
+.slider-labels{display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted);margin-top:4px}
+.section-label{font-weight:700;font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;width:100%}
+
+/* ═══════════════════════════════════════
+   WEBSITE LAYOUT
+═══════════════════════════════════════ */
+#s-app{display:none;min-height:100vh;flex-direction:row;background:var(--bg);align-items:stretch}
+#s-app.active{display:flex}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar-w);background:var(--card);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;z-index:50;transition:background .3s,border-color .3s}
+.sidebar-logo{padding:28px 20px 20px;border-bottom:1px solid var(--border)}
+.sidebar-logo-text{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:var(--indigo);display:flex;align-items:center;gap:8px}
+.sidebar-logo-text i{font-size:1.4rem}
+.sidebar-logo-sub{font-size:.72rem;color:var(--muted);margin-top:2px}
+.sidebar-nav{flex:1;padding:16px 12px;display:flex;flex-direction:column;gap:3px;overflow-y:auto}
+.sidebar-nav::-webkit-scrollbar{display:none}
+.nav-btn{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:14px;cursor:pointer;transition:.2s;color:var(--muted);font-size:.88rem;font-weight:600;border:none;background:transparent;font-family:'Plus Jakarta Sans',sans-serif;width:100%;text-align:left}
+.nav-btn i{font-size:1.2rem;flex-shrink:0;width:20px}
+.nav-btn:hover{background:var(--bg);color:var(--text)}
+.nav-btn.active{background:#EEF0FF;color:var(--indigo)}
+body.dark .nav-btn.active{background:#2A2A45;color:var(--indigo-light)}
+body.dark .nav-btn:hover{background:#1E1E35}
+.nav-divider{height:1px;background:var(--border);margin:8px 0}
+.nav-label{font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;padding:4px 14px;margin-top:6px}
+.sidebar-user{padding:16px 12px;border-top:1px solid var(--border)}
+.sidebar-user-card{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:var(--bg);cursor:pointer;transition:.2s}
+.sidebar-user-card:hover{background:var(--border)}
+.su-ava{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--indigo),#8B5CF6);display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:800;color:#fff;flex-shrink:0}
+.su-info{flex:1;min-width:0}
+.su-name{font-size:.84rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.su-level{font-size:.7rem;color:var(--muted)}
+
+/* MAIN CONTENT */
+.main-content{margin-left:var(--sidebar-w);flex:1;min-height:100vh;display:flex;flex-direction:column}
+.topbar{height:64px;background:var(--card);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;flex-shrink:0;position:sticky;top:0;z-index:40;transition:background .3s}
+.topbar-left{display:flex;align-items:center;gap:8px}
+.topbar-title{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:var(--text)}
+.topbar-breadcrumb{font-size:.78rem;color:var(--muted)}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.topbar-xp{background:#EEF0FF;color:var(--indigo);border-radius:50px;padding:6px 16px;font-size:.8rem;font-weight:800;display:flex;align-items:center;gap:6px}
+body.dark .topbar-xp{background:#2A2A45}
+.topbar-streak{background:#FFF7ED;color:#B45309;border-radius:50px;padding:6px 14px;font-size:.8rem;font-weight:800;border:1px solid #FED7AA}
+body.dark .topbar-streak{background:#2A1810;border-color:#4A3020}
+.topbar-dark-btn{width:36px;height:36px;border-radius:10px;background:var(--bg);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;color:var(--muted);transition:.2s}
+.topbar-dark-btn:hover{background:var(--border)}
+
+/* PAGES */
+.page{display:none;padding:28px;animation:fadeIn .25s ease;max-width:1100px;width:100%}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.page-title-big{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:6px;color:var(--text)}
+.page-subtitle{font-size:.88rem;color:var(--muted);margin-bottom:24px}
+
+/* GRID LAYOUTS */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.col-span-2{grid-column:span 2}
+
+/* CARDS */
+.card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:0 2px 12px rgba(91,94,244,.06);border:1px solid var(--border);transition:background .3s,border-color .3s}
+.card-title{font-weight:800;font-size:.95rem;margin-bottom:14px;display:flex;align-items:center;gap:7px;color:var(--text)}
+
+/* HOME HERO (wider) */
+.home-hero{background:linear-gradient(135deg,#3A3DC8,#5B5EF4 50%,#7C60EE);border-radius:24px;padding:28px 32px;color:#fff;margin-bottom:20px;position:relative;overflow:hidden;display:flex;align-items:center;gap:32px}
+.home-hero::after{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.06)}
+.home-hero::before{content:'';position:absolute;bottom:-30px;left:30%;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.04)}
+.hero-left{flex:1}
+.hero-greeting{font-size:.85rem;opacity:.8;margin-bottom:4px}
+.hero-name{font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:800;margin-bottom:10px}
+.hero-level{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.2);border-radius:8px;padding:4px 12px;font-size:.78rem;font-weight:700;margin-bottom:10px}
+.xp-info{display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:6px;opacity:.9}
+.xp-bar{background:rgba(255,255,255,.25);border-radius:50px;height:8px}
+.xp-fill{background:#fff;border-radius:50px;height:8px;transition:.8s}
+.hero-stats{display:flex;gap:12px;margin-top:16px}
+.hero-stat{background:rgba(255,255,255,.15);backdrop-filter:blur(4px);border-radius:14px;padding:12px 18px;text-align:center}
+.hero-stat .val{font-size:1.2rem;font-weight:800;display:block}
+.hero-stat .lbl{font-size:.68rem;opacity:.8}
+.hero-right{text-align:center;flex-shrink:0}
+.hero-big-badge{font-size:4.5rem;animation:float 3s ease-in-out infinite}
+
+/* QUICK GRID */
+.quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.quick-btn{border:none;border-radius:16px;padding:18px 14px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:.82rem;color:#fff;text-align:left;transition:.25s;position:relative;overflow:hidden;line-height:1.5}
+.quick-btn::after{content:'→';position:absolute;right:14px;bottom:14px;font-size:.95rem;opacity:.6}
+.quick-btn:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(0,0,0,.18)}
+
+/* CHALLENGE ITEMS */
+.challenge-item{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:.2s}
+.challenge-item:last-child{border:none;padding-bottom:0}
+.challenge-item:hover{opacity:.8}
+.ch-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0}
+.ch-meta{flex:1}
+.ch-meta strong{display:block;font-size:.9rem;font-weight:700;color:var(--text)}
+.ch-meta span{font-size:.78rem;color:var(--muted)}
+.xp-pill{background:#EEF0FF;color:var(--indigo);border-radius:8px;padding:4px 10px;font-size:.73rem;font-weight:800;white-space:nowrap}
+body.dark .xp-pill{background:#2A2A45}
+.xp-pill.done{background:#DCFCE7;color:var(--green)}
+body.dark .xp-pill.done{background:#1A3A2A}
+
+/* STREAK */
+.streak-card{background:linear-gradient(135deg,#FFF7ED,#FFFBEB);border:2px solid #FED7AA;border-radius:var(--radius);padding:18px;display:flex;align-items:center;gap:16px}
+body.dark .streak-card{background:linear-gradient(135deg,#2A1810,#251508);border-color:#4A3020}
+.streak-flame{font-size:2.5rem}
+.streak-info strong{font-size:1.05rem;font-weight:800;color:#B45309;display:block}
+body.dark .streak-info strong{color:#F59E0B}
+.streak-info span{font-size:.8rem;color:#92400E}
+body.dark .streak-info span{color:#D97706}
+.streak-bar-wrap{flex:1;background:#FED7AA;border-radius:50px;height:6px;overflow:hidden;margin-top:6px;max-width:160px}
+body.dark .streak-bar-wrap{background:#4A3020}
+.streak-fill{background:linear-gradient(90deg,#F59E0B,#EF4444);height:6px;border-radius:50px;transition:.6s}
+
+/* AI CHAT */
+.chat-layout{display:grid;grid-template-columns:1fr 360px;gap:20px;min-height:600px}
+.chat-main{display:flex;flex-direction:column;border-radius:var(--radius);background:var(--card);border:1px solid var(--border);overflow:hidden}
+.chat-header{background:linear-gradient(135deg,var(--indigo),var(--indigo-dark));padding:18px 20px;color:#fff;flex-shrink:0}
+.chat-scene-title{font-weight:800;font-size:1rem;margin-bottom:2px}
+.chat-scene-sub{font-size:.78rem;opacity:.7}
+.chat-steps{display:flex;gap:5px;margin-top:10px}
+.c-step{flex:1;height:4px;border-radius:2px;background:rgba(255,255,255,.25);transition:.4s}
+.c-step.done{background:#fff}
+.chat-messages{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:12px;min-height:350px;max-height:500px}
+.chat-messages::-webkit-scrollbar{width:4px}
+.chat-messages::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.msg{max-width:75%;padding:13px 16px;border-radius:18px;font-size:.88rem;line-height:1.6;animation:msgIn .2s ease}
+@keyframes msgIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+.msg-ai{background:var(--bg);color:var(--text);border-bottom-left-radius:4px}
+.msg-user{background:var(--indigo);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.msg-typing{background:var(--bg);border-radius:18px;border-bottom-left-radius:4px;padding:13px 18px;align-self:flex-start}
+.typing-dots{display:flex;gap:4px;align-items:center}
+.typing-dots span{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:blink 1.2s infinite}
+.typing-dots span:nth-child(2){animation-delay:.2s}
+.typing-dots span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.3}40%{opacity:1}}
+.chat-options{padding:12px 18px;display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--border);flex-shrink:0}
+.chat-option{background:var(--bg);border:2px solid var(--border);border-radius:12px;padding:11px 15px;font-size:.86rem;cursor:pointer;transition:.2s;text-align:left;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;color:var(--text)}
+.chat-option:hover{border-color:var(--indigo);background:#EEF0FF;color:var(--indigo)}
+body.dark .chat-option:hover{background:#2A2A45}
+.chat-input-row{display:flex;gap:8px;padding:12px 18px;border-top:1px solid var(--border);flex-shrink:0}
+.chat-input-row input{flex:1;border:2px solid var(--border);border-radius:50px;padding:11px 16px;outline:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;transition:.2s;background:var(--card);color:var(--text)}
+.chat-input-row input:focus{border-color:var(--indigo)}
+.btn-send{background:var(--indigo);color:#fff;border:none;border-radius:50%;width:44px;height:44px;cursor:pointer;font-size:1rem;flex-shrink:0;transition:.2s}
+.btn-send:hover{background:var(--indigo-dark);transform:scale(1.1)}
+.chat-sidebar-panel{border-radius:var(--radius);background:var(--card);border:1px solid var(--border);padding:20px;display:flex;flex-direction:column;gap:16px}
+
+/* SCENARIO GRID */
+.scenario-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+.scenario-card{background:var(--card);border-radius:16px;padding:20px;cursor:pointer;transition:.25s;box-shadow:0 2px 8px rgba(0,0,0,.05);text-align:center;border:2px solid var(--border)}
+.scenario-card:hover{border-color:var(--indigo);transform:translateY(-3px);box-shadow:0 8px 24px rgba(91,94,244,.15)}
+.scenario-card .sc-icon{font-size:2.2rem;margin-bottom:8px;display:block}
+.scenario-card .sc-name{font-size:.88rem;font-weight:700;color:var(--text)}
+.scenario-card .sc-sub{font-size:.74rem;color:var(--muted);margin:3px 0}
+.scenario-card .sc-xp{background:#EEF0FF;color:var(--indigo);border-radius:6px;padding:3px 10px;font-size:.73rem;font-weight:800;display:inline-block;margin-top:4px}
+body.dark .scenario-card .sc-xp{background:#2A2A45}
+
+/* HASIL */
+.result-grid{display:grid;grid-template-columns:280px 1fr;gap:20px}
+.score-ring{width:140px;height:140px;margin:0 auto 16px;position:relative}
+.score-ring svg{transform:rotate(-90deg)}
+.score-ring .score-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.score-num{font-family:'Syne',sans-serif;font-size:2.4rem;font-weight:800;color:var(--indigo);line-height:1}
+.score-of{font-size:.75rem;color:var(--muted)}
+.aspect-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:.86rem;gap:10px}
+.aspect-row:last-child{border:none}
+.aspect-name{flex:1;color:var(--text)}
+.aspect-bar{width:140px;background:#F0F1FF;border-radius:50px;height:6px;overflow:hidden}
+body.dark .aspect-bar{background:#2A2A45}
+.aspect-fill{height:6px;border-radius:50px;background:linear-gradient(90deg,var(--indigo),#8B5CF6);transition:.8s}
+.aspect-val{width:32px;text-align:right;font-weight:800;font-size:.82rem;color:var(--text)}
+
+/* DAILY */
+.dc-layout{display:grid;grid-template-columns:1fr 320px;gap:20px}
+.dc-calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:18px}
+.dc-day{text-align:center;font-size:.7rem;color:var(--muted);font-weight:700;padding-bottom:4px}
+.dc-date{text-align:center;padding:8px 2px;border-radius:10px;font-size:.8rem;font-weight:700;cursor:pointer;transition:.2s;color:var(--muted)}
+.dc-date.today{background:var(--indigo);color:#fff;box-shadow:0 4px 12px rgba(91,94,244,.3)}
+.dc-date.done{background:#DCFCE7;color:var(--green)}
+body.dark .dc-date.done{background:#1A3A2A}
+.dc-date.missed{color:var(--border)}
+.dc-date:not(.today):not(.done):not(.missed){color:var(--text)}
+.challenge-big{background:linear-gradient(135deg,var(--indigo),#7C60EE);border-radius:24px;padding:24px;color:#fff;text-align:center;position:relative;overflow:hidden}
+.challenge-big::after{content:'🎯';position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:4rem;opacity:.2}
+.streak-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.2);border-radius:50px;padding:5px 16px;font-size:.8rem;font-weight:700;margin-bottom:12px}
+.btn-complete{background:#fff;color:var(--indigo);font-weight:800;border:none;border-radius:50px;padding:14px 36px;font-size:.95rem;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:.2s;margin-top:8px}
+.btn-complete:hover{transform:scale(1.04)}
+.btn-complete:disabled{opacity:.6;cursor:not-allowed}
+
+/* PROGRESS */
+.progress-tabs{display:flex;background:var(--card);border-radius:12px;padding:4px;gap:4px;margin-bottom:18px;border:1px solid var(--border);width:fit-content}
+.p-tab{border:none;padding:9px 24px;border-radius:9px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;transition:.2s;background:transparent;color:var(--muted)}
+.p-tab.active{background:var(--indigo);color:#fff;box-shadow:0 2px 8px rgba(91,94,244,.25)}
+.chart-card{background:var(--card);border-radius:var(--radius);padding:22px;margin-bottom:16px;border:1px solid var(--border)}
+.chart-title{font-weight:800;font-size:.92rem;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;color:var(--text)}
+.chart-badge{background:#EEF0FF;color:var(--indigo);border-radius:8px;padding:3px 12px;font-size:.74rem;font-weight:800}
+body.dark .chart-badge{background:#2A2A45}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.stat-box{background:var(--card);border-radius:16px;padding:18px;text-align:center;border:1px solid var(--border)}
+.stat-box .val{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;color:var(--indigo);display:block}
+.stat-box .lbl{font-size:.72rem;color:var(--muted);font-weight:600;line-height:1.3;display:block;margin-top:3px}
+.motivasi-card{background:linear-gradient(135deg,var(--indigo),#7C60EE,#8B5CF6);border-radius:var(--radius);padding:22px;color:#fff;text-align:center}
+
+/* MATERI */
+.materi-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.materi-item{background:var(--card);border-radius:16px;padding:16px;cursor:pointer;transition:.25s;border:1px solid var(--border);display:flex;align-items:center;gap:14px}
+.materi-item:hover{box-shadow:0 6px 24px rgba(91,94,244,.12);transform:translateY(-2px);border-color:var(--indigo)}
+.materi-icon{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
+.materi-body strong{display:block;font-size:.9rem;font-weight:700;margin-bottom:2px;color:var(--text)}
+.materi-body span{font-size:.76rem;color:var(--muted)}
+.materi-arrow{margin-left:auto;color:var(--muted);font-size:.9rem}
+.search-box{background:var(--card);border-radius:14px;padding:11px 16px;display:flex;align-items:center;gap:10px;margin-bottom:14px;border:1px solid var(--border)}
+.search-box input{border:none;outline:none;flex:1;font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;color:var(--text);background:transparent}
+.cat-tabs{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px}
+.cat-tabs::-webkit-scrollbar{display:none}
+.cat-tab{border:2px solid var(--border);border-radius:50px;padding:7px 20px;font-size:.78rem;font-weight:700;cursor:pointer;background:var(--card);transition:.2s;white-space:nowrap;font-family:'Plus Jakarta Sans',sans-serif;color:var(--text)}
+.cat-tab.active{background:var(--indigo);color:#fff;border-color:var(--indigo)}
+
+/* KOMUNITAS */
+.post-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.post-card{background:var(--card);border-radius:var(--radius);padding:18px;border:1px solid var(--border);transition:.2s}
+.post-card:hover{box-shadow:0 4px 20px rgba(91,94,244,.1)}
+.post-author{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.author-ava{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:800;color:#fff;flex-shrink:0}
+.post-text{font-size:.88rem;line-height:1.7;color:var(--text);margin-bottom:14px}
+.post-actions{display:flex;gap:16px}
+.post-act{font-size:.8rem;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:5px;transition:.2s;font-weight:600;border:none;background:none;font-family:'Plus Jakarta Sans',sans-serif}
+.post-act:hover,.post-act.liked{color:var(--rose)}
+.post-act.comment:hover{color:var(--indigo)}
+.new-post-btn{background:var(--indigo);color:#fff;border:none;border-radius:12px;padding:10px 20px;font-weight:700;font-size:.84rem;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;display:flex;align-items:center;gap:6px;transition:.2s}
+.new-post-btn:hover{background:var(--indigo-dark);transform:translateY(-1px)}
+
+/* ACHIEVEMENT */
+.badge-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.badge-card{background:var(--card);border-radius:16px;padding:18px;text-align:center;border:1px solid var(--border);transition:.2s;cursor:pointer}
+.badge-card:hover:not(.locked){transform:translateY(-3px);box-shadow:0 8px 24px rgba(91,94,244,.12)}
+.badge-card.locked{opacity:.4;filter:grayscale(1)}
+.badge-emoji{font-size:2.4rem;margin-bottom:8px}
+.badge-name{font-weight:800;font-size:.86rem;color:var(--text)}
+.badge-desc{font-size:.72rem;color:var(--muted);margin:4px 0}
+.badge-status{font-size:.74rem;font-weight:700;color:var(--indigo);margin-top:5px}
+.badge-status.done{color:var(--green)}
+
+/* PROFIL */
+.profil-layout{display:grid;grid-template-columns:320px 1fr;gap:20px}
+.profil-card{background:linear-gradient(135deg,#3A3DC8,var(--indigo),#7C60EE);border-radius:24px;padding:28px;color:#fff;text-align:center}
+.profil-ava{width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:2.4rem;margin:0 auto 12px;border:3px solid rgba(255,255,255,.5)}
+.profil-name{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800}
+.profil-level{font-size:.8rem;opacity:.8;margin-top:3px}
+.profil-stats{display:flex;justify-content:center;gap:0;margin-top:20px;border-top:1px solid rgba(255,255,255,.2);padding-top:18px}
+.ps{flex:1;text-align:center;border-right:1px solid rgba(255,255,255,.2)}
+.ps:last-child{border:none}
+.ps .psv{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;display:block}
+.ps .psl{font-size:.72rem;opacity:.75}
+
+/* MENU LIST */
+.menu-list{background:var(--card);border-radius:var(--radius);overflow:hidden;margin-bottom:14px;border:1px solid var(--border)}
+.menu-item{display:flex;align-items:center;gap:12px;padding:15px 18px;cursor:pointer;transition:.2s;border-bottom:1px solid var(--border)}
+.menu-item:last-child{border:none}
+.menu-item:hover{background:var(--bg)}
+.menu-item .mi-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.menu-item span{flex:1;font-size:.9rem;font-weight:600;color:var(--text)}
+.menu-item .mi-arrow{color:#CCC;font-size:.78rem}
+.menu-item.danger span{color:var(--rose)}
+
+/* SUB PAGES */
+.page-header{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.back-btn{width:38px;height:38px;border-radius:12px;background:var(--card);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.06);flex-shrink:0;color:var(--text)}
+.page-header h1{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:var(--text)}
+
+.riwayat-item{background:var(--card);border-radius:14px;padding:14px;margin-bottom:8px;display:flex;align-items:center;gap:12px;border:1px solid var(--border)}
+.riwayat-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.riwayat-meta{flex:1}
+.riwayat-meta strong{display:block;font-size:.88rem;font-weight:700;color:var(--text)}
+.riwayat-meta small{color:var(--muted);font-size:.75rem}
+.riwayat-xp{font-weight:800;font-size:.88rem}
+
+.settings-section{background:var(--card);border-radius:var(--radius);overflow:hidden;margin-bottom:16px;border:1px solid var(--border)}
+.settings-item{display:flex;align-items:center;justify-content:space-between;padding:15px 18px;border-bottom:1px solid var(--border);transition:.2s;cursor:pointer}
+.settings-item:last-child{border:none}
+.settings-item:hover{background:var(--bg)}
+.settings-label{display:flex;align-items:center;gap:10px;font-size:.9rem;font-weight:600;color:var(--text)}
+.settings-label i{width:20px;color:var(--indigo)}
+
+.faq-item{background:var(--card);border-radius:14px;margin-bottom:8px;overflow:hidden;border:1px solid var(--border)}
+.faq-q{padding:15px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-size:.9rem;font-weight:700;color:var(--text)}
+.faq-q i{transition:.3s;flex-shrink:0;color:var(--muted)}
+.faq-a{padding:0 18px;max-height:0;overflow:hidden;transition:.3s;font-size:.84rem;color:var(--muted);line-height:1.7}
+.faq-a.open{padding:0 18px 15px;max-height:300px}
+
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px}
+.feature-card{background:var(--card);border-radius:16px;padding:22px;text-align:center;cursor:pointer;border:1px solid var(--border);transition:.25s}
+.feature-card:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(91,94,244,.12);border-color:var(--indigo)}
+.feature-card .fc-icon{font-size:2.4rem;margin-bottom:10px;display:block}
+.feature-card .fc-name{font-size:.88rem;font-weight:800;color:var(--text)}
+.feature-card .fc-desc{font-size:.74rem;color:var(--muted);margin-top:4px}
+
+/* MODALS */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-overlay.show{display:flex}
+.modal-sheet{background:var(--card);border-radius:24px;width:100%;max-width:520px;padding:0;max-height:90vh;overflow:hidden;display:flex;flex-direction:column;animation:modalIn .3s cubic-bezier(.34,1.56,.64,1);box-shadow:0 24px 64px rgba(0,0,0,.25)}
+@keyframes modalIn{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:16px auto}
+.modal-body{flex:1;overflow-y:auto;padding:0 24px 28px}
+.modal-body::-webkit-scrollbar{display:none}
+.modal-title{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:800;text-align:center;margin-bottom:18px;color:var(--text)}
+
+/* XP POPUP */
+.xp-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);background:linear-gradient(135deg,var(--indigo),#8B5CF6);color:#fff;border-radius:24px;padding:32px 40px;text-align:center;z-index:600;transition:.4s cubic-bezier(.34,1.56,.64,1);pointer-events:none;box-shadow:0 24px 64px rgba(91,94,244,.5)}
+.xp-popup.show{transform:translate(-50%,-50%) scale(1)}
+.xp-popup .xp-emoji{font-size:3.5rem;display:block;margin-bottom:10px}
+.xp-popup .xp-amount{font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800}
+.xp-popup .xp-label{font-size:.92rem;opacity:.8}
+.xp-popup .level-up-text{margin-top:10px;background:rgba(255,255,255,.2);border-radius:8px;padding:7px 16px;font-weight:700;font-size:.88rem}
+
+/* TOAST */
+.toast{position:fixed;top:24px;right:24px;transform:translateX(200px);background:var(--text);color:#fff;padding:12px 22px;border-radius:14px;font-size:.84rem;font-weight:700;z-index:999;transition:.35s cubic-bezier(.34,1.56,.64,1);max-width:340px;box-shadow:0 8px 28px rgba(0,0,0,.2)}
+.toast.show{transform:translateX(0)}
+.toast.success{background:var(--green)}
+.toast.error{background:var(--rose)}
+.toast.info{background:var(--indigo)}
+
+/* LEVEL UP BANNER */
+.levelup-banner{position:fixed;top:0;left:50%;transform:translateX(-50%) translateY(-100%);background:linear-gradient(90deg,var(--indigo),#8B5CF6);color:#fff;padding:16px 32px;border-radius:0 0 20px 20px;z-index:600;transition:.5s;text-align:center;min-width:360px}
+.levelup-banner.show{transform:translateX(-50%) translateY(0)}
+.levelup-banner strong{display:block;font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800}
+.levelup-banner span{font-size:.84rem;opacity:.85}
+
+/* EDIT NAME MODAL */
+.edit-name-group{display:flex;gap:10px;align-items:center}
+.edit-name-group input{flex:1}
+
+/* BREATHING */
+#breath-circle{transition:transform 4s ease}
+
+/* SCROLLABLE CONTENT AREA */
+.content-scroll{flex:1;overflow-y:auto;display:flex;justify-content:flex-start}
+.content-scroll::-webkit-scrollbar{width:6px}
+.content-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+/* RESPONSIVE — mobile fallback */
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main-content{margin-left:0}
+  .two-col,.three-col,.result-grid,.dc-layout,.profil-layout,.chat-layout,.post-grid,.scenario-grid,.badge-grid,.materi-grid,.quick-grid,.feature-grid,.stat-grid{grid-template-columns:1fr}
+  .col-span-2{grid-column:1}
+  .home-hero{flex-direction:column}
+  .hero-big-badge{display:none}
+  .topbar{padding:0 16px}
+  .page{padding:16px}
+}
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+<!-- XP POPUP -->
+<div class="xp-popup" id="xp-popup">
+  <span class="xp-emoji">⚡</span>
+  <div class="xp-amount" id="xp-popup-amount">+30 XP</div>
+  <div class="xp-label">XP diperoleh!</div>
+  <div class="level-up-text" id="xp-popup-extra" style="display:none"></div>
+</div>
+<!-- LEVEL UP BANNER -->
+<div class="levelup-banner" id="levelup-banner">
+  <strong id="levelup-text">🎉 Level Up!</strong>
+  <span id="levelup-sub">Kamu naik ke Level 2!</span>
+</div>
+
+<!-- =================== SPLASH =================== -->
+<div class="screen active" id="s-splash">
+  <div class="splash-bg-circle" style="width:600px;height:600px;top:-200px;right:-200px"></div>
+  <div class="splash-bg-circle" style="width:350px;height:350px;bottom:-100px;left:-100px"></div>
+  <div class="splash-logo"><i class="bi bi-heart-pulse-fill"></i></div>
+  <div class="splash-title">SocialUp</div>
+  <div class="splash-sub">Langkah kecil hari ini,<br>perubahan besar untukmu.</div>
+  <button class="btn-splash" onclick="go('s-onboarding')">Mulai Sekarang ✨</button>
+</div>
+
+<!-- =================== ONBOARDING =================== -->
+<div class="screen" id="s-onboarding">
+  <div class="screen-card">
+    <div class="ob-container">
+      <div class="ob-dots" id="ob-dots"></div>
+      <div class="ob-illus-wrap" id="ob-illus">🧗</div>
+      <div class="ob-title" id="ob-title">Jadi versi terbaik dirimu</div>
+      <div class="ob-desc" id="ob-desc">Bangun kepercayaan diri dan kemampuan sosialmu secara bertahap dengan latihan interaktif setiap hari.</div>
+    </div>
+  </div>
+  <div class="ob-footer">
+    <button class="btn-skip" onclick="go('s-comfort')">Lewati</button>
+    <button class="btn-next" id="ob-btn" onclick="obNext()">Selanjutnya →</button>
+  </div>
+</div>
+
+<!-- =================== COMFORT =================== -->
+<div class="screen" id="s-comfort">
+  <div class="screen-card" style="display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center">
+    <div style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:var(--text)">Seberapa siap kamu?</div>
+    <div style="color:var(--muted);font-size:.9rem;max-width:300px">Pilih tingkat kenyamananmu saat ini</div>
+    <div class="comfort-emojis">
+      <span class="comfort-emoji" onclick="selectComfort(this,'1')">😰</span>
+      <span class="comfort-emoji" onclick="selectComfort(this,'2')">😟</span>
+      <span class="comfort-emoji" onclick="selectComfort(this,'3')">😐</span>
+      <span class="comfort-emoji" onclick="selectComfort(this,'4')">🙂</span>
+      <span class="comfort-emoji" onclick="selectComfort(this,'5')">😊</span>
+    </div>
+    <div class="comfort-labels" style="width:100%"><span>Sangat Tidak Nyaman</span><span>Sangat Nyaman</span></div>
+    <button class="btn-next" id="comfort-next-btn" onclick="go('s-register')" style="width:100%;padding:14px;opacity:.4;cursor:not-allowed" disabled>Selanjutnya →</button>
+  </div>
+</div>
+
+<!-- =================== REGISTER =================== -->
+<div class="screen" id="s-register">
+  <div class="screen-card" style="display:flex;flex-direction:column;gap:14px;overflow-y:auto;max-height:92vh">
+    <div class="auth-logo">💙 SocialUp</div>
+    <div class="auth-title">Buat Akun Baru</div>
+    <div class="auth-subtitle">Mulai perjalanan sosialmu hari ini</div>
+    <div class="tab-row">
+      <button class="tab-btn active" id="tab-email" onclick="switchRegTab('email')">📧 Email</button>
+      <button class="tab-btn" id="tab-hp" onclick="switchRegTab('hp')">📱 No. HP</button>
+    </div>
+    <div class="form-group"><i class="bi bi-person-fill fi"></i><input class="auth-input" id="reg-name" type="text" placeholder="Nama Lengkap" autocomplete="name"></div>
+    <div class="form-group" id="reg-email-group"><i class="bi bi-envelope-fill fi"></i><input class="auth-input" id="reg-email" type="email" placeholder="Alamat Email" autocomplete="email"></div>
+    <div class="form-group" id="reg-hp-group" style="display:none"><i class="bi bi-telephone-fill fi"></i><input class="auth-input" id="reg-hp" type="tel" placeholder="Nomor HP (contoh: 08xxxxxxxxxx)"></div>
+    <div class="form-group"><i class="bi bi-geo-alt-fill fi"></i><input class="auth-input" id="reg-kota" type="text" placeholder="Kota tempat tinggal"></div>
+    <div class="form-group"><i class="bi bi-lock-fill fi"></i><input class="auth-input" id="reg-pass" type="password" placeholder="Kata Sandi (min. 6 karakter)" oninput="checkStrength(this.value)"></div>
+    <div class="strength-bar" id="strength-bar" style="display:none"><div class="strength-fill" id="strength-fill"></div></div>
+    <div class="input-hint" id="strength-hint" style="display:none">Kekuatan: <span id="strength-text"></span></div>
+    <div class="form-group"><i class="bi bi-lock-fill fi"></i><input class="auth-input" id="reg-pass2" type="password" placeholder="Konfirmasi Kata Sandi"></div>
+    <button class="btn-primary" onclick="doRegister()">Daftar Sekarang 🚀</button>
+    <p class="auth-switch" onclick="go('s-login')">Sudah punya akun? <span>Masuk di sini</span></p>
+    <p style="font-size:.74rem;color:var(--muted);text-align:center;line-height:1.6">Dengan mendaftar, kamu menyetujui <span style="color:var(--indigo);font-weight:700">Syarat & Ketentuan</span> serta <span style="color:var(--indigo);font-weight:700">Kebijakan Privasi</span> SocialUp.</p>
+  </div>
+</div>
+
+<!-- =================== LOGIN =================== -->
+<div class="screen" id="s-login">
+  <div class="screen-card" style="display:flex;flex-direction:column;gap:16px">
+    <div class="auth-logo">💙 SocialUp</div>
+    <div class="auth-title">Selamat Datang Kembali!</div>
+    <div class="auth-subtitle">Lanjutkan perjalananmu</div>
+    <div class="form-group"><i class="bi bi-envelope-fill fi"></i><input class="auth-input" id="login-email" type="email" placeholder="Email" autocomplete="email"></div>
+    <div class="form-group"><i class="bi bi-lock-fill fi"></i><input class="auth-input" id="login-pass" type="password" placeholder="Kata Sandi" autocomplete="current-password"></div>
+    <button class="btn-primary" onclick="doLogin()">Masuk</button>
+    <p class="auth-switch" style="color:var(--indigo);font-weight:700;font-size:.88rem" onclick="showToast('Link reset dikirim ke email!','success')">Lupa Kata Sandi?</p>
+    <p class="auth-switch" onclick="go('s-register')">Belum punya akun? <span>Daftar di sini</span></p>
+    <div style="display:flex;align-items:center;gap:10px"><div style="flex:1;height:1px;background:var(--border)"></div><span style="font-size:.8rem;color:var(--muted)">atau</span><div style="flex:1;height:1px;background:var(--border)"></div></div>
+    <button onclick="quickDemo()" style="width:100%;background:var(--bg);border:2px solid var(--border);border-radius:50px;padding:14px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;font-size:.9rem;color:var(--muted);transition:.2s" onmouseover="this.style.borderColor='var(--indigo)'" onmouseout="this.style.borderColor='var(--border)'">🎮 Coba Demo Dulu</button>
+  </div>
+</div>
+
+<!-- =================== VERIFY =================== -->
+<div class="screen" id="s-verify">
+  <div class="screen-card" style="display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center">
+    <div style="width:80px;height:80px;border-radius:50%;background:#EEF0FF;display:flex;align-items:center;justify-content:center;font-size:2.6rem">📧</div>
+    <div style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:var(--text)">Verifikasi Email</div>
+    <div style="color:var(--muted);font-size:.88rem;max-width:280px;line-height:1.7">Kode 6 digit dikirim ke<br><strong id="verify-email-show" style="color:var(--indigo)">email@gmail.com</strong></div>
+    <div class="otp-row">
+      <input class="otp-input" maxlength="1" oninput="otpInput(this,0)" onkeydown="otpKeydown(this,0)">
+      <input class="otp-input" maxlength="1" oninput="otpInput(this,1)" onkeydown="otpKeydown(this,1)">
+      <input class="otp-input" maxlength="1" oninput="otpInput(this,2)" onkeydown="otpKeydown(this,2)">
+      <input class="otp-input" maxlength="1" oninput="otpInput(this,3)" onkeydown="otpKeydown(this,3)">
+      <input class="otp-input" maxlength="1" oninput="otpInput(this,4)" onkeydown="otpKeydown(this,4)">
+      <input class="otp-input" maxlength="1" oninput="otpInput(this,5)" onkeydown="otpKeydown(this,5)">
+    </div>
+    <div style="font-size:.84rem;color:var(--muted)">Tidak dapat kode? <button class="resend-btn" id="resend-btn" onclick="startResend()" disabled>Kirim Ulang (<span id="resend-countdown">30</span>s)</button></div>
+    <button class="btn-primary" onclick="doVerify()">Verifikasi ✓</button>
+  </div>
+</div>
+
+<!-- =================== PROFILE INFO =================== -->
+<div class="screen" id="s-profile-info">
+  <div class="screen-card" style="display:flex;flex-direction:column;align-items:center;gap:14px;overflow-y:auto;max-height:92vh">
+    <div style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;text-align:center;color:var(--text)">Kenali dirimu lebih baik</div>
+    <div style="color:var(--muted);font-size:.84rem;text-align:center;max-width:320px">Info ini membantu kami memberikan pengalaman yang tepat</div>
+    <div class="avatar-upload" onclick="showToast('Fitur upload foto segera hadir! 📸','info')">
+      <i class="bi bi-person-fill"></i>
+      <div class="avatar-badge"><i class="bi bi-camera-fill"></i></div>
+    </div>
+    <div class="section-label">Tanggal Lahir</div>
+    <div class="form-group"><i class="bi bi-calendar3 fi"></i><input class="auth-input" type="date" id="pinfo-dob"></div>
+    <div class="section-label">Jenis Kelamin</div>
+    <div class="tab-row" style="width:100%">
+      <button class="tab-btn" id="pg-l" onclick="selGender('l')">🧑 Laki-laki</button>
+      <button class="tab-btn" id="pg-p" onclick="selGender('p')">👩 Perempuan</button>
+      <button class="tab-btn" id="pg-o" onclick="selGender('o')">🌈 Lainnya</button>
+    </div>
+    <div class="section-label">Kemampuan Berbicara di Depan Umum</div>
+    <div class="slider-wrap">
+      <input type="range" min="1" max="10" value="3" id="social-slider" oninput="updateSliderLabel(this.value)">
+      <div class="slider-labels"><span>Sangat Pemalu</span><span id="slider-val" style="color:var(--indigo);font-weight:700">3/10</span><span>Sangat Percaya Diri</span></div>
+    </div>
+    <button class="btn-primary" onclick="go('s-goals')">Selanjutnya →</button>
+  </div>
+</div>
+
+<!-- =================== GOALS =================== -->
+<div class="screen" id="s-goals">
+  <div class="screen-card" style="display:flex;flex-direction:column;align-items:center;gap:10px;overflow-y:auto;max-height:92vh">
+    <div style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;text-align:center;color:var(--text)">Apa tujuan utamamu?</div>
+    <div style="color:var(--muted);font-size:.86rem;text-align:center;margin-bottom:6px">Pilih satu atau lebih</div>
+    <div class="goal-card" onclick="toggleGoal(this)"><span class="goal-icon">💪</span><div class="goal-text"><strong>Meningkatkan kepercayaan diri</strong><span>Berani berbicara dan bertindak</span></div><div class="goal-check"></div></div>
+    <div class="goal-card" onclick="toggleGoal(this)"><span class="goal-icon">🗣️</span><div class="goal-text"><strong>Lebih nyaman bersosialisasi</strong><span>Mudah berbaur dengan siapapun</span></div><div class="goal-check"></div></div>
+    <div class="goal-card" onclick="toggleGoal(this)"><span class="goal-icon">😌</span><div class="goal-text"><strong>Mengatasi rasa canggung</strong><span>Santai dan natural di situasi baru</span></div><div class="goal-check"></div></div>
+    <div class="goal-card" onclick="toggleGoal(this)"><span class="goal-icon">🤝</span><div class="goal-text"><strong>Memperluas relasi & pertemanan</strong><span>Punya banyak teman berkualitas</span></div><div class="goal-check"></div></div>
+    <div class="goal-card" onclick="toggleGoal(this)"><span class="goal-icon">🎤</span><div class="goal-text"><strong>Mahir public speaking</strong><span>Presentasi & berbicara di depan umum</span></div><div class="goal-check"></div></div>
+    <button class="btn-primary" style="margin-top:8px" onclick="go('s-prefs')">Selanjutnya →</button>
+  </div>
+</div>
+
+<!-- =================== PREFS =================== -->
+<div class="screen" id="s-prefs">
+  <div class="screen-card" style="display:flex;flex-direction:column;align-items:center;gap:0;overflow-y:auto;max-height:92vh">
+    <div style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;text-align:center;width:100%;margin-bottom:4px;color:var(--text)">Atur pengalamanmu</div>
+    <div style="color:var(--muted);font-size:.86rem;text-align:center;margin-bottom:16px">Bisa diubah kapan saja di Pengaturan</div>
+    <div class="toggle-row"><span class="toggle-label"><i class="bi bi-calendar-check"></i>Daily Challenge</span><label class="toggle-switch"><input type="checkbox" checked id="pref-dc"><span class="toggle-slider"></span></label></div>
+    <div class="toggle-row"><span class="toggle-label"><i class="bi bi-bell-fill"></i>Notifikasi Motivasi</span><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+    <div class="toggle-row"><span class="toggle-label"><i class="bi bi-moon-stars-fill"></i>Mode Gelap</span><label class="toggle-switch"><input type="checkbox" id="dark-pref" onchange="toggleDark(this.checked)"><span class="toggle-slider"></span></label></div>
+    <div class="toggle-row"><span class="toggle-label"><i class="bi bi-mortarboard-fill"></i>Konten Pemula</span><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+    <div class="toggle-row"><span class="toggle-label"><i class="bi bi-music-note-beamed"></i>Efek Suara</span><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+    <button class="btn-primary" style="margin-top:24px" onclick="enterApp()">Mulai Petualangan! 🎉</button>
+  </div>
+</div>
+
+<!-- =================== APP SHELL (WEBSITE LAYOUT) =================== -->
+<div class="screen" id="s-app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-text"><i class="bi bi-heart-pulse-fill"></i>SocialUp</div>
+      <div class="sidebar-logo-sub">Versi terbaik dirimu</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-label">Menu Utama</div>
+      <button class="nav-btn active" id="nav-home" onclick="navTo('p-home')"><i class="bi bi-house-fill"></i>Beranda</button>
+      <button class="nav-btn" id="nav-progress" onclick="navTo('p-progress')"><i class="bi bi-graph-up-arrow"></i>Progress</button>
+      <button class="nav-btn" id="nav-latihan" onclick="navTo('p-latihan')"><i class="bi bi-controller"></i>Latihan AI</button>
+      <button class="nav-btn" id="nav-daily" onclick="navTo('p-daily')"><i class="bi bi-calendar-check"></i>Daily Challenge</button>
+      <button class="nav-btn" id="nav-materi" onclick="navTo('p-materi')"><i class="bi bi-book"></i>Materi</button>
+      <div class="nav-divider"></div>
+      <div class="nav-label">Sosial</div>
+      <button class="nav-btn" id="nav-komunitas" onclick="navTo('p-komunitas')"><i class="bi bi-people-fill"></i>Komunitas</button>
+      <button class="nav-btn" id="nav-achievement" onclick="navTo('p-achievement')"><i class="bi bi-trophy-fill"></i>Pencapaian</button>
+      <div class="nav-divider"></div>
+      <div class="nav-label">Akun</div>
+      <button class="nav-btn" id="nav-profil" onclick="navTo('p-profil')"><i class="bi bi-person-fill"></i>Profil</button>
+      <button class="nav-btn" id="nav-settings" onclick="navTo('p-settings')"><i class="bi bi-gear-fill"></i>Pengaturan</button>
+      <button class="nav-btn" onclick="navTo('p-fitur')"><i class="bi bi-grid-fill"></i>Fitur Lainnya</button>
+    </nav>
+    <div class="sidebar-user">
+      <div class="sidebar-user-card" onclick="navTo('p-profil')">
+        <div class="su-ava" id="sidebar-ava">?</div>
+        <div class="su-info">
+          <div class="su-name" id="sidebar-name">Pengguna</div>
+          <div class="su-level" id="sidebar-level">Level 1 · Pemula</div>
+        </div>
+        <i class="bi bi-chevron-right" style="color:var(--muted);font-size:.75rem"></i>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="topbar-title" id="topbar-title">Beranda</div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-xp" id="topbar-xp">⚡ 0 XP</div>
+        <div class="topbar-streak" id="topbar-streak">🔥 0 Hari</div>
+        <button class="topbar-dark-btn" id="dark-toggle-btn" onclick="toggleDark(!state.dark)" title="Toggle Mode Gelap">
+          <i class="bi bi-moon-stars-fill" id="dark-icon"></i>
+        </button>
+        <button onclick="doLogout()" style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:7px 14px;cursor:pointer;font-size:.82rem;font-weight:700;color:var(--muted);font-family:'Plus Jakarta Sans',sans-serif;transition:.2s" onmouseover="this.style.color='var(--rose)'" onmouseout="this.style.color='var(--muted)'"><i class="bi bi-box-arrow-right"></i></button>
+      </div>
+    </header>
+
+    <!-- CONTENT SCROLL -->
+    <div class="content-scroll">
+    <div style="width:100%;max-width:1100px;padding:0">
+
+    <!-- ── HOME ── -->
+    <div class="page active" id="p-home">
+      <div class="home-hero">
+        <div class="hero-left">
+          <div class="hero-greeting">Selamat datang kembali 👋</div>
+          <div class="hero-name" id="hero-name">Hai, Pengguna!</div>
+          <div class="hero-level" id="hero-level-badge">⭐ Level 1 – Pemula</div>
+          <div class="xp-info"><span id="xp-text">0 / 200 XP</span><span id="xp-percent">0%</span></div>
+          <div class="xp-bar" style="width:280px"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
+          <div class="hero-stats">
+            <div class="hero-stat"><span class="val" id="stat-confidence">0%</span><span class="lbl">Kepercayaan Diri</span></div>
+            <div class="hero-stat"><span class="val" id="stat-sessions">0</span><span class="lbl">Sesi Latihan</span></div>
+            <div class="hero-stat"><span class="val" id="stat-streak">0🔥</span><span class="lbl">Hari Streak</span></div>
+          </div>
+        </div>
+        <div class="hero-right"><div class="hero-big-badge" id="hero-badge-big">🌱</div></div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <div class="card" style="margin-bottom:16px">
+            <div class="card-title">⚡ Aksi Cepat</div>
+            <div class="quick-grid">
+              <button class="quick-btn" style="background:linear-gradient(135deg,#5B5EF4,#7C60EE)" onclick="navTo('p-latihan')">🤖 Latihan AI<br><span style="font-size:.7rem;opacity:.7;font-weight:500">Interaktif & seru</span></button>
+              <button class="quick-btn" style="background:linear-gradient(135deg,#10B981,#059669)" onclick="navTo('p-daily')">📅 Daily Challenge<br><span style="font-size:.7rem;opacity:.7;font-weight:500">Tantangan hari ini</span></button>
+              <button class="quick-btn" style="background:linear-gradient(135deg,#F59E0B,#D97706)" onclick="navTo('p-materi')">📚 Baca Materi<br><span style="font-size:.7rem;opacity:.7;font-weight:500">Tips sosial baru</span></button>
+              <button class="quick-btn" style="background:linear-gradient(135deg,#F43F5E,#E11D48)" onclick="navTo('p-komunitas')">🏘️ Komunitas<br><span style="font-size:.7rem;opacity:.7;font-weight:500">Share & support</span></button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">📅 Tantangan Hari Ini</div>
+            <div id="home-challenges"></div>
+          </div>
+        </div>
+        <div>
+          <div class="streak-card" style="margin-bottom:16px">
+            <div class="streak-flame">🔥</div>
+            <div style="flex:1">
+              <div class="streak-info"><strong id="streak-text">0 Hari Streak</strong><span>Tetap konsisten setiap hari!</span></div>
+              <div class="streak-bar-wrap"><div class="streak-fill" id="streak-fill" style="width:0%"></div></div>
+            </div>
+            <div style="font-weight:800;font-size:.9rem;color:#B45309" id="streak-goal">0/7</div>
+          </div>
+          <div class="card" id="home-recent-card" style="display:none">
+            <div class="card-title">🕐 Aktivitas Terakhir</div>
+            <div id="home-recent"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── LATIHAN (PILIH SKENARIO) ── -->
+    <div class="page" id="p-latihan">
+      <div class="page-title-big">🎮 Pilih Skenario Latihan</div>
+      <div class="page-subtitle">Latihan percakapan dengan AI yang cerdas dan responsif</div>
+      <div class="scenario-grid" id="scenario-grid"></div>
+      <div class="card" style="background:linear-gradient(135deg,#EEF0FF,#F0F1FF);border:2px dashed var(--indigo)">
+        <div style="text-align:center;font-size:.9rem;color:var(--indigo);font-weight:700">💡 Tip: Semakin sering berlatih, kepercayaan dirimu makin meningkat!</div>
+      </div>
+    </div>
+
+    <!-- ── AI CHAT ── -->
+    <div class="page" id="p-chat">
+      <div class="page-header">
+        <button class="back-btn" onclick="navTo('p-latihan')"><i class="bi bi-arrow-left"></i></button>
+        <h1>Latihan AI – <span id="chat-scene-title-h">Berkenalan</span></h1>
+      </div>
+      <div class="chat-layout">
+        <div class="chat-main">
+          <div class="chat-header">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+              <div class="chat-scene-title" id="chat-scene-title">Latihan: Berkenalan</div>
+              <div class="xp-pill" style="background:rgba(255,255,255,.2);color:#fff" id="chat-xp-pill">+0 XP</div>
+            </div>
+            <div class="chat-scene-sub" id="chat-scene-sub">AI akan berperan sebagai lawan bicaramu</div>
+            <div class="chat-steps" id="chat-steps"></div>
+          </div>
+          <div class="chat-messages" id="chat-messages"></div>
+          <div class="chat-options" id="chat-options"></div>
+          <div class="chat-input-row">
+            <input type="text" id="chat-text" placeholder="Ketik responmu atau pilih di atas…" onkeydown="if(event.key==='Enter')sendChat()">
+            <button class="btn-send" onclick="sendChat()"><i class="bi bi-send-fill"></i></button>
+          </div>
+        </div>
+        <div class="chat-sidebar-panel">
+          <div style="font-weight:800;font-size:.92rem;color:var(--text)">💡 Tips Latihan</div>
+          <div style="font-size:.84rem;color:var(--muted);line-height:1.7" id="chat-tips">Pilih respons yang paling natural dan sesuai dengan kepribadianmu. Tidak ada jawaban yang salah!</div>
+          <div style="border-top:1px solid var(--border);padding-top:14px">
+            <div style="font-weight:700;font-size:.84rem;color:var(--text);margin-bottom:8px">📊 Progres Sesi</div>
+            <div style="font-size:.8rem;color:var(--muted)">Langkah: <strong id="chat-step-info" style="color:var(--indigo)">0 / 0</strong></div>
+            <div style="font-size:.8rem;color:var(--muted);margin-top:4px">Skenario: <strong id="chat-scenario-info" style="color:var(--text)">–</strong></div>
+          </div>
+          <div style="border-top:1px solid var(--border);padding-top:14px">
+            <div style="font-weight:700;font-size:.84rem;color:var(--text);margin-bottom:10px">🎯 Skenario Lain</div>
+            <div id="quick-scenarios" style="display:flex;flex-direction:column;gap:8px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── HASIL ── -->
+    <div class="page" id="p-hasil">
+      <div class="page-header">
+        <button class="back-btn" onclick="navTo('p-latihan')"><i class="bi bi-arrow-left"></i></button>
+        <h1>Hasil Latihan</h1>
+      </div>
+      <div class="result-grid">
+        <div class="card" style="text-align:center">
+          <div class="score-ring">
+            <svg viewBox="0 0 120 120" width="140" height="140">
+              <circle cx="60" cy="60" r="50" fill="none" stroke="#EEF0FF" stroke-width="10"/>
+              <circle cx="60" cy="60" r="50" fill="none" stroke="url(#rg)" stroke-width="10" stroke-linecap="round" stroke-dasharray="314" id="score-arc" stroke-dashoffset="314"/>
+              <defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#5B5EF4"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient></defs>
+            </svg>
+            <div class="score-text"><div class="score-num" id="result-score">0</div><div class="score-of">/100</div></div>
+          </div>
+          <div id="result-grade" style="font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;margin-bottom:4px;color:var(--text)"></div>
+          <div id="result-msg" style="color:var(--muted);font-size:.86rem;line-height:1.6;margin-bottom:20px"></div>
+          <div style="display:flex;gap:10px">
+            <button onclick="navTo('p-latihan')" style="flex:1;background:var(--bg);border:2px solid var(--border);border-radius:14px;padding:13px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;cursor:pointer;color:var(--muted);font-size:.86rem">← Pilih Skenario</button>
+            <button class="btn-primary" style="flex:1;border-radius:14px;max-width:none;font-size:.86rem" onclick="replayChat()">Ulang 🔄</button>
+          </div>
+        </div>
+        <div>
+          <div class="card" style="margin-bottom:16px">
+            <div class="card-title">📊 Aspek Penilaian</div>
+            <div id="result-aspects"></div>
+          </div>
+          <div class="card">
+            <div class="card-title">💡 Saran AI</div>
+            <div id="result-feedback" style="font-size:.88rem;color:var(--muted);line-height:1.75"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── DAILY CHALLENGE ── -->
+    <div class="page" id="p-daily">
+      <div class="page-title-big">📅 Tantangan Harian</div>
+      <div class="page-subtitle">Selesaikan tantangan nyata di kehidupan sehari-harimu</div>
+      <div class="dc-layout">
+        <div>
+          <div class="card" style="margin-bottom:16px">
+            <div class="card-title">📆 Kalender Bulan Ini</div>
+            <div class="dc-calendar" id="dc-cal"></div>
+          </div>
+          <div class="card">
+            <div class="card-title">🎯 Tantangan Lainnya</div>
+            <div id="extra-challenges"></div>
+          </div>
+        </div>
+        <div>
+          <div class="challenge-big" style="margin-bottom:16px">
+            <div class="streak-pill">🔥 Streak <span id="dc-streak">0</span> Hari</div>
+            <div style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:6px" id="dc-title">Tantangan Hari Ini</div>
+            <div style="font-size:.86rem;opacity:.85;margin-bottom:16px" id="dc-desc">Mulai tantangan harimu!</div>
+            <button class="btn-complete" id="dc-btn" onclick="completeDC()">✅ Saya Sudah Mencoba!</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PROGRESS ── -->
+    <div class="page" id="p-progress">
+      <div class="page-title-big">📈 Progress Kamu</div>
+      <div class="page-subtitle">Pantau perkembangan kemampuan sosialmu dari waktu ke waktu</div>
+      <div class="progress-tabs">
+        <button class="p-tab active" onclick="switchPTab(this,'7')">7 Hari</button>
+        <button class="p-tab" onclick="switchPTab(this,'30')">1 Bulan</button>
+        <button class="p-tab" onclick="switchPTab(this,'90')">3 Bulan</button>
+      </div>
+      <div class="two-col">
+        <div>
+          <div class="chart-card">
+            <div class="chart-title">Kepercayaan Diri <span class="chart-badge" id="conf-badge">0%</span></div>
+            <svg viewBox="0 0 320 130" style="width:100%;height:130px">
+              <defs><linearGradient id="pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#5B5EF4" stop-opacity=".25"/><stop offset="100%" stop-color="#5B5EF4" stop-opacity="0"/></linearGradient></defs>
+              <path id="chart-area" fill="url(#pg)"/>
+              <path id="chart-line" stroke="#5B5EF4" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle id="chart-dot" r="5" fill="#5B5EF4"/>
+            </svg>
+            <div id="chart-labels" style="display:flex;justify-content:space-between;font-size:.7rem;color:var(--muted);margin-top:4px"></div>
+          </div>
+          <div class="stat-grid" id="progress-stats"></div>
+        </div>
+        <div>
+          <div class="motivasi-card" style="margin-bottom:16px">
+            <div style="font-size:1.6rem;margin-bottom:8px">💡</div>
+            <div style="font-weight:800;font-size:1rem;margin-bottom:6px" id="motivasi-text">Konsistensi adalah kuncinya!</div>
+            <div style="font-size:.84rem;opacity:.8" id="motivasi-sub">Setiap langkah kecil membawamu lebih dekat ke tujuan.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">🏆 Level Saat Ini</div>
+            <div id="level-detail" style="font-size:.88rem;color:var(--muted);line-height:1.8"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MATERI ── -->
+    <div class="page" id="p-materi">
+      <div class="page-title-big">📚 Materi Belajar</div>
+      <div class="page-subtitle">Tips dan teknik untuk meningkatkan kemampuan sosialmu</div>
+      <div class="search-box"><i class="bi bi-search" style="color:var(--muted)"></i><input type="text" placeholder="Cari materi…" id="materi-search" oninput="filterMateri()"></div>
+      <div class="cat-tabs">
+        <button class="cat-tab active" onclick="filterCat(this,'semua')">Semua</button>
+        <button class="cat-tab" onclick="filterCat(this,'tips')">Tips</button>
+        <button class="cat-tab" onclick="filterCat(this,'teknik')">Teknik</button>
+        <button class="cat-tab" onclick="filterCat(this,'public')">Public Speaking</button>
+        <button class="cat-tab" onclick="filterCat(this,'mindset')">Mindset</button>
+      </div>
+      <div class="materi-grid" id="materi-list"></div>
+    </div>
+
+    <!-- ── KOMUNITAS ── -->
+    <div class="page" id="p-komunitas">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px">
+        <div><div class="page-title-big" style="margin-bottom:2px">🏘️ Komunitas Aman</div><div class="page-subtitle" style="margin-bottom:0">Berbagi cerita dan saling mendukung</div></div>
+        <button class="new-post-btn" onclick="openNewPost()"><i class="bi bi-plus-lg"></i> Buat Post</button>
+      </div>
+      <div class="post-grid" id="post-list"></div>
+    </div>
+
+    <!-- ── ACHIEVEMENT ── -->
+    <div class="page" id="p-achievement">
+      <div class="page-title-big">🏆 Pencapaian</div>
+      <div class="page-subtitle">Kumpulkan badge dengan menyelesaikan misi</div>
+      <div style="display:flex;gap:8px;margin-bottom:18px">
+        <button class="p-tab active" id="ach-tab-open" onclick="switchAchTab('open')">Terbuka</button>
+        <button class="p-tab" id="ach-tab-locked" onclick="switchAchTab('locked')">Terkunci</button>
+      </div>
+      <div class="badge-grid" id="badge-grid"></div>
+    </div>
+
+    <!-- ── PROFIL ── -->
+    <div class="page" id="p-profil">
+      <div class="page-title-big">👤 Profil Saya</div>
+      <div class="profil-layout">
+        <div>
+          <div class="profil-card" style="margin-bottom:16px">
+            <div class="profil-ava" id="profil-ava">🧑</div>
+            <div class="profil-name" id="profil-name">Pengguna</div>
+            <div class="profil-level" id="profil-level-text">Level 1 · Pemula</div>
+            <div class="profil-stats">
+              <div class="ps"><span class="psv" id="ps-xp">0</span><span class="psl">Total XP</span></div>
+              <div class="ps"><span class="psv" id="ps-sessions">0</span><span class="psl">Latihan</span></div>
+              <div class="ps"><span class="psv" id="ps-streak">0🔥</span><span class="psl">Streak</span></div>
+            </div>
+          </div>
+          <div class="menu-list">
+            <div class="menu-item" onclick="openEditName()"><div class="mi-icon" style="background:#EEF0FF"><i class="bi bi-pencil-fill" style="color:var(--indigo)"></i></div><span>Ganti Nama</span><i class="bi bi-chevron-right mi-arrow"></i></div>
+            <div class="menu-item" onclick="navTo('p-riwayat')"><div class="mi-icon" style="background:#EEF0FF"><i class="bi bi-clock-history" style="color:var(--indigo)"></i></div><span>Riwayat Aktivitas</span><i class="bi bi-chevron-right mi-arrow"></i></div>
+            <div class="menu-item" onclick="navTo('p-achievement')"><div class="mi-icon" style="background:#FFF7ED"><i class="bi bi-trophy" style="color:#F59E0B"></i></div><span>Pencapaian</span><i class="bi bi-chevron-right mi-arrow"></i></div>
+          </div>
+          <div class="menu-list">
+            <div class="menu-item danger" onclick="doLogout()"><div class="mi-icon" style="background:#FFF0F3"><i class="bi bi-box-arrow-right" style="color:var(--rose)"></i></div><span>Keluar</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="menu-list">
+            <div class="menu-item" onclick="navTo('p-privacy')"><div class="mi-icon" style="background:#F0FDF4"><i class="bi bi-shield-check" style="color:var(--green)"></i></div><span>Privasi & Keamanan</span><i class="bi bi-chevron-right mi-arrow"></i></div>
+            <div class="menu-item" onclick="navTo('p-faq')"><div class="mi-icon" style="background:#FFF0F3"><i class="bi bi-question-circle" style="color:var(--rose)"></i></div><span>Bantuan & FAQ</span><i class="bi bi-chevron-right mi-arrow"></i></div>
+            <div class="menu-item" onclick="navTo('p-fitur')"><div class="mi-icon" style="background:#EEF0FF"><i class="bi bi-grid" style="color:var(--indigo)"></i></div><span>Fitur Tambahan</span><i class="bi bi-chevron-right mi-arrow"></i></div>
+            <div class="menu-item" onclick="navTo('p-settings')"><div class="mi-icon" style="background:#F5F5F5"><i class="bi bi-gear" style="color:var(--muted)"></i></div><span>Pengaturan</span><i class="bi bi-chevron-right mi-arrow"></i></div>
+          </div>
+          <div class="card">
+            <div class="card-title">📊 Ringkasan Aktivitas</div>
+            <div id="profil-summary" style="font-size:.88rem;color:var(--muted);line-height:2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── RIWAYAT ── -->
+    <div class="page" id="p-riwayat">
+      <div class="page-header"><button class="back-btn" onclick="navTo('p-profil')"><i class="bi bi-arrow-left"></i></button><h1>Riwayat Aktivitas</h1></div>
+      <div id="riwayat-list"></div>
+    </div>
+
+    <!-- ── PRIVACY ── -->
+    <div class="page" id="p-privacy">
+      <div class="page-header"><button class="back-btn" onclick="navTo('p-profil')"><i class="bi bi-arrow-left"></i></button><h1>Privasi & Keamanan</h1></div>
+      <div class="two-col">
+        <div>
+          <div class="settings-section">
+            <div class="settings-item"><div class="settings-label"><i class="bi bi-person-badge"></i><span>Akun Privat</span></div><label class="toggle-switch"><input type="checkbox"><span class="toggle-slider"></span></label></div>
+            <div class="settings-item"><div class="settings-label"><i class="bi bi-incognito"></i><span>Mode Anonim di Komunitas</span></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+            <div class="settings-item"><div class="settings-label"><i class="bi bi-bell-fill"></i><span>Notifikasi Push</span></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+          </div>
+          <div class="settings-section">
+            <div class="settings-item" onclick="showToast('Fitur ganti bahasa segera hadir!','info')"><div class="settings-label"><i class="bi bi-translate"></i><span>Bahasa</span></div><span style="font-size:.82rem;color:var(--muted)">Indonesia <i class="bi bi-chevron-right"></i></span></div>
+            <div class="settings-item" onclick="showToast('Fitur pengingat segera hadir!','info')"><div class="settings-label"><i class="bi bi-clock"></i><span>Pengingat Harian</span></div><span style="font-size:.82rem;color:var(--muted)">08:00 <i class="bi bi-chevron-right"></i></span></div>
+          </div>
+        </div>
+        <div>
+          <div class="settings-section">
+            <div class="settings-item" onclick="showToast('Laporan dikirim, terima kasih!','success')"><div class="settings-label"><i class="bi bi-flag"></i><span>Laporkan Konten</span></div><i class="bi bi-chevron-right" style="color:#CCC"></i></div>
+            <div class="settings-item" onclick="confirmDelete()"><div class="settings-label"><i class="bi bi-trash" style="color:var(--rose)"></i><span style="color:var(--rose)">Hapus Akun</span></div><i class="bi bi-chevron-right" style="color:#CCC"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── FAQ ── -->
+    <div class="page" id="p-faq">
+      <div class="page-header"><button class="back-btn" onclick="navTo('p-profil')"><i class="bi bi-arrow-left"></i></button><h1>Bantuan & FAQ</h1></div>
+      <div class="two-col">
+        <div><div id="faq-list"></div></div>
+        <div>
+          <div class="card" style="text-align:center">
+            <div style="font-size:3rem;margin-bottom:12px">💬</div>
+            <div style="font-weight:800;font-size:1rem;margin-bottom:8px;color:var(--text)">Masih butuh bantuan?</div>
+            <div style="font-size:.86rem;color:var(--muted);margin-bottom:16px;line-height:1.7">Tim kami siap membantu kamu 24/7</div>
+            <button class="btn-primary" onclick="showToast('Tim kami akan segera menghubungimu!','success')">Hubungi Kami</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── FITUR ── -->
+    <div class="page" id="p-fitur">
+      <div class="page-header"><button class="back-btn" onclick="navTo('p-profil')"><i class="bi bi-arrow-left"></i></button><h1>Fitur Tambahan</h1></div>
+      <div class="feature-grid">
+        <div class="feature-card" onclick="openJurnal()"><span class="fc-icon">📓</span><div class="fc-name">Jurnal Perasaan</div><div class="fc-desc">Catat emosimu setiap hari</div></div>
+        <div class="feature-card" onclick="openRencana()"><span class="fc-icon">🗓️</span><div class="fc-name">Rencana Belajar</div><div class="fc-desc">Jadwal latihan rutinmu</div></div>
+        <div class="feature-card" onclick="showToast('AI Coach segera hadir! 🤖','info')"><span class="fc-icon">🤖</span><div class="fc-name">AI Coach</div><div class="fc-desc">Konsultasi personal dengan AI</div></div>
+        <div class="feature-card" onclick="navTo('p-komunitas')"><span class="fc-icon">🏘️</span><div class="fc-name">Komunitas</div><div class="fc-desc">Berbagi & saling support</div></div>
+        <div class="feature-card" onclick="openBreathing()"><span class="fc-icon">🧘</span><div class="fc-name">Latihan Napas</div><div class="fc-desc">Kurangi kecemasan sosial</div></div>
+        <div class="feature-card" onclick="showToast('Leaderboard segera hadir! 🏆','info')"><span class="fc-icon">🏆</span><div class="fc-name">Leaderboard</div><div class="fc-desc">Bersaing dengan teman</div></div>
+      </div>
+    </div>
+
+    <!-- ── SETTINGS ── -->
+    <div class="page" id="p-settings">
+      <div class="page-header"><button class="back-btn" onclick="navTo('p-profil')"><i class="bi bi-arrow-left"></i></button><h1>Pengaturan Akun</h1></div>
+      <div class="two-col">
+        <div>
+          <div class="settings-section">
+            <div class="settings-item" onclick="openEditName()"><div class="settings-label"><i class="bi bi-pencil"></i><span>Ganti Nama</span></div><i class="bi bi-chevron-right" style="color:#CCC"></i></div>
+            <div class="settings-item" onclick="showToast('Fitur ganti password segera hadir!','info')"><div class="settings-label"><i class="bi bi-lock"></i><span>Ganti Password</span></div><i class="bi bi-chevron-right" style="color:#CCC"></i></div>
+            <div class="settings-item" onclick="showToast('Fitur upload foto segera hadir!','info')"><div class="settings-label"><i class="bi bi-image"></i><span>Foto Profil</span></div><i class="bi bi-chevron-right" style="color:#CCC"></i></div>
+          </div>
+          <div class="settings-section">
+            <div class="settings-item"><div class="settings-label"><i class="bi bi-moon-stars"></i><span>Mode Gelap</span></div><label class="toggle-switch"><input type="checkbox" id="dark-settings" onchange="toggleDark(this.checked)"><span class="toggle-slider"></span></label></div>
+            <div class="settings-item"><div class="settings-label"><i class="bi bi-bell"></i><span>Notifikasi Push</span></div><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+          </div>
+        </div>
+        <div>
+          <div class="settings-section">
+            <div class="settings-item" onclick="doLogout()" style="cursor:pointer"><div class="settings-label"><i class="bi bi-box-arrow-right" style="color:var(--rose)"></i><span style="color:var(--rose)">Keluar</span></div></div>
+            <div class="settings-item" onclick="confirmDelete()"><div class="settings-label"><i class="bi bi-trash" style="color:var(--rose)"></i><span style="color:var(--rose)">Hapus Akun</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    </div><!-- /max-width wrapper -->
+    </div><!-- /content-scroll -->
+  </div><!-- /main-content -->
+</div><!-- /s-app -->
+
+<!-- ═══════════════ MODALS ═══════════════ -->
+
+<!-- MODAL: NEW POST -->
+<div class="modal-overlay" id="modal-post">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-body">
+      <div class="modal-title">✍️ Buat Postingan</div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;padding:14px;background:var(--bg);border-radius:14px">
+        <div class="author-ava" style="background:var(--indigo)" id="post-ava">?</div>
+        <div>
+          <div style="font-weight:700;font-size:.9rem;color:var(--text)" id="post-author-name">Kamu</div>
+          <label style="display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--muted);cursor:pointer;margin-top:2px"><input type="checkbox" id="anon-toggle" style="accent-color:var(--indigo)"> Posting sebagai Anonim</label>
+        </div>
+      </div>
+      <textarea id="post-text" style="width:100%;border:2px solid var(--border);border-radius:14px;padding:14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;resize:none;height:120px;outline:none;transition:.2s;color:var(--text);background:var(--card)" placeholder="Bagikan cerita, pertanyaan, atau pengalamanmu…" onfocus="this.style.borderColor='var(--indigo)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+      <select id="post-cat" style="width:100%;border:2px solid var(--border);border-radius:12px;padding:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.88rem;outline:none;margin-top:10px;color:var(--text);background:var(--card)">
+        <option value="">Pilih kategori...</option>
+        <option>💡 Tips</option><option>🌟 Pengalaman</option><option>🤝 Dukungan</option><option>❓ Pertanyaan</option>
+      </select>
+      <div style="display:flex;gap:10px;margin-top:14px">
+        <button onclick="closeModal('modal-post')" style="flex:1;background:var(--bg);border:2px solid var(--border);border-radius:50px;padding:13px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;cursor:pointer;color:var(--muted)">Batal</button>
+        <button class="btn-primary" style="flex:1;border-radius:50px;max-width:none" onclick="submitPost()">Posting 🚀</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: MATERI -->
+<div class="modal-overlay" id="modal-materi">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-body">
+      <div class="modal-title" id="materi-modal-title"></div>
+      <div style="display:flex;gap:10px;margin-bottom:16px;font-size:.8rem;color:var(--muted)" id="materi-modal-meta"></div>
+      <div id="materi-modal-content" style="font-size:.9rem;line-height:1.9;color:var(--muted)"></div>
+      <button class="btn-primary" style="margin-top:22px" onclick="finishMateri()">✅ Selesai Membaca (+10 XP)</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: JURNAL -->
+<div class="modal-overlay" id="modal-jurnal">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-body">
+      <div class="modal-title">📓 Jurnal Perasaan</div>
+      <div style="font-size:.86rem;color:var(--muted);margin-bottom:14px">Bagaimana perasaanmu hari ini?</div>
+      <div class="comfort-emojis" style="margin-bottom:16px">
+        <span class="comfort-emoji" onclick="selectComfort(this,'1')">😢</span>
+        <span class="comfort-emoji" onclick="selectComfort(this,'2')">😟</span>
+        <span class="comfort-emoji" onclick="selectComfort(this,'3')">😐</span>
+        <span class="comfort-emoji" onclick="selectComfort(this,'4')">🙂</span>
+        <span class="comfort-emoji" onclick="selectComfort(this,'5')">😊</span>
+      </div>
+      <textarea id="jurnal-text" style="width:100%;border:2px solid var(--border);border-radius:14px;padding:14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.9rem;resize:none;height:130px;outline:none;color:var(--text);background:var(--card);transition:.2s" placeholder="Tulis apa yang kamu rasakan dan alami hari ini…" onfocus="this.style.borderColor='var(--indigo)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+      <button class="btn-primary" style="margin-top:14px" onclick="saveJurnal()">Simpan Jurnal 💙</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: RENCANA -->
+<div class="modal-overlay" id="modal-rencana">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-body">
+      <div class="modal-title">🗓️ Rencana Belajar</div>
+      <div style="font-size:.86rem;color:var(--muted);margin-bottom:14px">Pilih hari latihan rutinmu</div>
+      <div class="toggle-row"><span class="toggle-label">📅 Senin</span><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+      <div class="toggle-row"><span class="toggle-label">📅 Selasa</span><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+      <div class="toggle-row"><span class="toggle-label">📅 Rabu</span><label class="toggle-switch"><input type="checkbox"><span class="toggle-slider"></span></label></div>
+      <div class="toggle-row"><span class="toggle-label">📅 Kamis</span><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+      <div class="toggle-row"><span class="toggle-label">📅 Jumat</span><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+      <div class="toggle-row"><span class="toggle-label">📅 Sabtu</span><label class="toggle-switch"><input type="checkbox"><span class="toggle-slider"></span></label></div>
+      <div class="toggle-row"><span class="toggle-label">📅 Minggu</span><label class="toggle-switch"><input type="checkbox"><span class="toggle-slider"></span></label></div>
+      <button class="btn-primary" style="margin-top:16px" onclick="closeModal('modal-rencana');showToast('Jadwal disimpan! 📅','success')">Simpan Jadwal</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: BREATHING -->
+<div class="modal-overlay" id="modal-breathing">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-body" style="text-align:center">
+      <div class="modal-title">🧘 Latihan Pernapasan 4-7-8</div>
+      <div style="font-size:.86rem;color:var(--muted);margin-bottom:20px">Teknik untuk menenangkan kecemasan sosial</div>
+      <div id="breath-circle" style="width:140px;height:140px;border-radius:50%;background:linear-gradient(135deg,var(--indigo),#8B5CF6);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 0 0 0 rgba(91,94,244,.4)">
+        <div style="color:#fff;font-size:1.1rem;font-weight:800" id="breath-text">Siap?</div>
+      </div>
+      <div style="font-size:.95rem;font-weight:700;margin-bottom:6px;color:var(--text)" id="breath-phase"></div>
+      <div style="font-size:.82rem;color:var(--muted)" id="breath-count"></div>
+      <div style="display:flex;gap:10px;margin-top:22px">
+        <button onclick="closeModal('modal-breathing');stopBreathing()" style="flex:1;background:var(--bg);border:2px solid var(--border);border-radius:50px;padding:13px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;cursor:pointer;color:var(--muted)">Selesai</button>
+        <button class="btn-primary" style="flex:1;border-radius:50px;max-width:none" onclick="startBreathing()" id="breath-btn">Mulai</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: LOGOUT -->
+<div class="modal-overlay" id="modal-logout">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-body" style="text-align:center">
+      <div style="font-size:4rem;margin-bottom:14px">👋</div>
+      <div class="modal-title">Sampai Jumpa!</div>
+      <div style="color:var(--muted);font-size:.88rem;margin-bottom:22px;line-height:1.7">Semua progresmu tersimpan dengan aman.<br>Ingat untuk berlatih lagi besok ya!</div>
+      <button class="btn-primary" onclick="confirmLogout()">Ya, Keluar</button>
+      <button onclick="closeModal('modal-logout')" style="width:100%;background:transparent;border:2px solid var(--border);border-radius:50px;padding:14px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;cursor:pointer;color:var(--muted);margin-top:10px">Batalkan</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: EDIT NAME ← NEW -->
+<div class="modal-overlay" id="modal-edit-name">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-body">
+      <div class="modal-title">✏️ Ganti Nama</div>
+      <div style="font-size:.86rem;color:var(--muted);margin-bottom:16px;text-align:center">Nama baru akan langsung tampil di seluruh aplikasi</div>
+      <div style="position:relative;margin-bottom:8px">
+        <i class="bi bi-person-fill" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted)"></i>
+        <input class="auth-input" id="edit-name-input" type="text" placeholder="Masukkan nama baru" style="padding-left:42px">
+      </div>
+      <div style="font-size:.76rem;color:var(--muted);margin-bottom:16px">Nama saat ini: <strong id="current-name-display" style="color:var(--indigo)">–</strong></div>
+      <div style="display:flex;gap:10px">
+        <button onclick="closeModal('modal-edit-name')" style="flex:1;background:var(--bg);border:2px solid var(--border);border-radius:50px;padding:13px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;cursor:pointer;color:var(--muted)">Batal</button>
+        <button class="btn-primary" style="flex:1;border-radius:50px;max-width:none" onclick="saveNewName()">Simpan Nama ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// DATA CONSTANTS
+// ═══════════════════════════════════════════════════
+const LEVELS=[{min:0,max:200,name:'Pemula',badge:'🌱'},{min:200,max:450,name:'Penjelajah',badge:'🚶'},{min:450,max:750,name:'Petarung',badge:'⚔️'},{min:750,max:1100,name:'Pemberani',badge:'🦁'},{min:1100,max:1500,name:'Sosializer',badge:'🤝'},{min:1500,max:2000,name:'Komunikator',badge:'🗣️'},{min:2000,max:2600,name:'Influencer',badge:'⭐'},{min:2600,max:3300,name:'Maestro',badge:'🎭'},{min:3300,max:4100,name:'Legenda',badge:'🏆'},{min:4100,max:Infinity,name:'Grandmaster',badge:'👑'}];
+
+const SCENARIOS=[{id:'berkenalan',icon:'👋',name:'Berkenalan',sub:'Sapa orang baru',xp:40,steps:5,turns:[{ai:"Hai! Aku Dinda. Kamu siapa?",opts:["Hai Dinda! Aku {name}. Senang ketemu kamu!","Halo, nama aku {name}. Kamu dari mana?","Wah, hai! Namaku {name}. Ini kali pertama kita ketemu ya?"]},{ai:"Senang ketemu kamu juga, {name}! Kamu kerja atau kuliah?",opts:["Aku kerja, kamu sendiri gimana?","Aku masih kuliah. Kamu sudah kerja?","Aku lagi freelance. Kamu gimana?"]},{ai:"Oh seru! Kalau boleh tahu, apa yang kamu suka lakuin di waktu luang?",opts:["Aku suka baca buku dan dengerin musik. Kamu?","Biasanya aku jalan-jalan atau nonton film.","Aku main game dan kadang masak. Kamu juga suka memasak?"]},{ai:"Wah kita punya kesamaan! Kamu tinggal di daerah mana?",opts:["Aku di {kota}. Jauh nggak dari sini?","Di {kota}, tapi aku sering ke sini. Kamu di sini juga?","Aku di {kota}. Kamu orang sini asli?"]},{ai:"Oh aku juga sering lewat sana! Boleh minta kontaknya nggak? Siapa tahu bisa hang out bareng.",opts:["Boleh dong! Ini nomorku ya.","Tentu! Yuk kita exchange kontak.","Boleh banget! Kapan-kapan bisa jalan bareng."]}]},{id:'kerja',icon:'💼',name:'Situasi Kerja',sub:'Di kantor & meeting',xp:50,steps:5,turns:[{ai:"Selamat pagi! Kamu karyawan baru ya? Aku Budi, dari divisi Marketing.",opts:["Selamat pagi Pak Budi! Iya, aku {name}. Baru mulai hari ini.","Pagi! Iya betul, aku {name}. Senang bisa bergabung.","Selamat pagi! Iya, nama aku {name}. Masih adaptasi nih."]},{ai:"Ah, selamat datang {name}! Gimana kesan pertama di kantor kita?",opts:["Menyenangkan sekali! Semua orang ramah.","Seru! Tempatnya nyaman dan timnya kompak.","Baik, walaupun agak gugup tapi semua helpful."]},{ai:"Haha itu wajar! Oh iya, nanti ada meeting jam 2 siang. Kamu mau ikut untuk familiarisasi?",opts:["Tentu, aku mau ikut dan belajar!","Boleh, terima kasih atas undangannya.","Mau banget! Kira-kira membahas apa ya?"]},{ai:"Bagus! Kalau ada yang nggak paham soal meeting tadi, langsung tanya aku aja ya.",opts:["Siap! Terima kasih Pak Budi, sangat membantu.","Wah baik sekali. Pasti aku tanya kalau ada yang bingung.","Terima kasih banyak. Kamu mentor yang baik!"]},{ai:"Sama-sama! Di kantor kita ada budaya feedback terbuka. Kamu tipe orang yang suka feedback langsung atau bertahap?",opts:["Aku lebih suka feedback langsung, biar cepat improve.","Bertahap lebih baik buatku agar bisa dicerna dengan baik.","Dua-duanya oke bagiku. Yang penting konstruktif!"]}]},{id:'public',icon:'🎤',name:'Public Speaking',sub:'Presentasi & pidato',xp:60,steps:5,turns:[{ai:"Kamu adalah pembicara selanjutnya. Bagaimana persiapanmu?",opts:["Sudah siap! Aku sudah latihan berkali-kali.","Agak gugup, tapi sudah mempersiapkan materi dengan baik.","Sangat antusias dan siap memberikan yang terbaik!"]},{ai:"Mantap! Kamu biasanya gimana mengatasi gugup sebelum presentasi?",opts:["Aku tarik napas dalam beberapa kali.","Aku visualisasi keberhasilan presentasiku.","Aku ngobrol santai dengan audiens dulu sebelum mulai."]},{ai:"Good tips! Kalau tiba-tiba blank di tengah presentasi, apa yang kamu lakukan?",opts:["Aku pause sebentar, minum air, lalu lanjut.","Aku tanya ke audiens untuk tetap engage.","Aku kembali ke catatan atau slide untuk refocus."]},{ai:"Pintar! Bagaimana cara kamu buat audiens tetap tertarik sepanjang presentasi?",opts:["Gunakan storytelling dan contoh nyata yang relatable.","Ajukan pertanyaan interaktif di tengah presentasi.","Gunakan visual yang menarik dan humor ringan."]},{ai:"Tips yang luar biasa! Satu kata motivasi untuk dirimu sebelum naik panggung?",opts:["'Aku sudah siap dan aku layak ada di sini!'","'Kesempurnaan bukan tujuan, koneksi dengan audiens yang utama.'","'Gugup itu energi, aku akan ubah jadi semangat!'"]}]},{id:'teman',icon:'👥',name:'Cari Teman Baru',sub:'Situasi sosial santai',xp:35,steps:5,turns:[{ai:"Hei, kamu juga nunggu di sini sendirian? Aku Rara! Lagi nunggu siapa?",opts:["Hai Rara! Aku {name}. Lagi nunggu teman juga nih.","Halo! Iya, aku {name}. Kamu juga?","Wah iya! Namaku {name}. Kebetulan sekali."]},{ai:"Oh sama dong! Kamu sering ke tempat ini?",opts:["Sesekali, tapi hari ini agak spesial.","Baru pertama kali nih. Tempatnya enak ternyata!","Lumayan sering, tapi baru sekarang ketemu kamu."]},{ai:"Haha iya bener! Eh kamu hobi apa? Kelihatannya orangnya seru deh.",opts:["Aku suka hiking dan fotografi. Kamu?","Main musik dan sesekali melukis. Gimana denganmu?","Baca buku dan nonton film. Kamu punya rekomendasi?"]},{ai:"Wah keren banget! Kamu sekolah atau kerja?",opts:["Kerja, baru setahun ini. Masih newbie haha.","Kuliah semester akhir. Lagi struggle skripsi.","Sudah kerja sambil freelance. Lumayan sibuk!"]},{ai:"Seru banget ceritamu! Btw ini nomorku, kalau mau ngobrol lagi atau jalan bareng kapan-kapan.",opts:["Wah terima kasih! Ini kontakku juga ya, Rara.","Asyik! Kapan-kapan bisa nongkrong bareng nih.","Pasti! Senang bisa kenalan sama kamu hari ini."]}]},{id:'konflik',icon:'🕊️',name:'Mengatasi Konflik',sub:'Komunikasi asertif',xp:70,steps:5,turns:[{ai:"Kamu kenapa telat terus datangnya? Ini sudah ketiga kalinya!",opts:["Maaf ya, aku nggak bermaksud. Ada situasi yang nggak terduga tadi.","Aku minta maaf. Bisa kita ngobrol baik-baik soal ini?","Maaf. Aku akan usahakan lebih baik ke depannya."]},{ai:"Aku ngerti ada alasan, tapi ini sudah mengganggu jadwal kita.",opts:["Kamu benar. Aku akan lebih serius memperhatikan waktu.","Aku paham. Apa yang bisa aku lakukan untuk memperbaiki ini?","Itu fair. Aku minta maaf dan berterima kasih sudah jujur."]},{ai:"Oke, aku appreciate kejujuranmu. Menurut kamu solusinya apa?",opts:["Aku bisa set alarm 30 menit lebih awal mulai besok.","Kita bisa saling reminder sehari sebelumnya, bagaimana?","Aku akan buat jadwal lebih ketat dan beri kabar kalau ada kendala."]},{ai:"Ide yang bagus! Kamu orang yang mau bertanggung jawab, aku suka itu.",opts:["Terima kasih. Kepercayaan kamu penting bagiku.","Aku belajar bahwa komunikasi terbuka jauh lebih baik.","Ini juga jadi pelajaran buat aku untuk lebih disiplin."]},{ai:"Kita sudah beres ya soal ini. Ke depannya, kalau ada masalah langsung bilang aja.",opts:["Pasti! Kamu juga ya, jangan segan untuk jujur sama aku.","Setuju. Komunikasi terbuka bikin hubungan lebih kuat.","Deal! Aku nilai banget keberanianmu tadi bahas ini."]}]},{id:'dating',icon:'💌',name:'Kencan Pertama',sub:'Situasi romantis ringan',xp:65,steps:5,turns:[{ai:"Eh, kamu sudah lama nunggu? Maaf ya agak telat!",opts:["Nggak lama kok! Baru aja sampai. Kamu kelihatan cantik/ganteng hari ini!","Baru beberapa menit. Santai aja, aku juga baru tiba haha.","Nggak papa! Yang penting sudah datang. Yuk masuk?"]},{ai:"Haha makasih! Kamu pilih meja yang bagus. Kamu sering ke sini?",opts:["Sesekali. Tapi aku pilih sini karena viewnya bagus buat ngobrol.","Baru pertama kali. Tapi katanya tempatnya cozy ya?","Lumayan sering. Makanannya enak dan suasananya nyaman."]},{ai:"Bagus banget pilihanmu! Ngomong-ngomong, kamu mau pesan apa?",opts:["Aku biasanya pilih yang recommendation. Kamu rekomendasiin apa?","Aku mau coba signature menu-nya. Kamu mau apa?","Belum tahu nih, menu apa yang enak menurut kamu?"]},{ai:"Kamu lucu deh, selalu ada aja yang ditanyain haha. Aku suka ngobrol sama kamu.",opts:["Haha aku juga nyaman banget ngobrol sama kamu!","Aku memang penasaran, mau tahu lebih banyak tentang kamu.","Makasih! Kamu juga menyenangkan diajak bicara."]},{ai:"Hari ini seru banget! Kapan-kapan kita lanjut ya? Kamu mau nggak?",opts:["Tentu mau! Aku tunggu kabarmu ya 😊","Mau banget! Ini jadi salah satu hari yang menyenangkan.","Iya dong! Kamu punya rekomendasi tempat lain yang seru?"]}]}];
+
+const BADGES=[{id:'b1',emoji:'👣',name:'Langkah Pertama',desc:'Selesaikan latihan pertama',unlock:'sessions >= 1'},{id:'b2',emoji:'💪',name:'Berani Memulai',desc:'Selesaikan 5 latihan',unlock:'sessions >= 5'},{id:'b3',emoji:'🔥',name:'Konsisten',desc:'7 hari berturut-turut',unlock:'streak >= 7'},{id:'b4',emoji:'👥',name:'Social Starter',desc:'Selesaikan 10 tantangan harian',unlock:'dcDone.length >= 10'},{id:'b5',emoji:'🎤',name:'Komunikator',desc:'Selesaikan 20 latihan',unlock:'sessions >= 20'},{id:'b6',emoji:'⭐',name:'Level Up!',desc:'Capai Level 5',unlock:'level >= 5'},{id:'b7',emoji:'🏆',name:'XP Master',desc:'Kumpulkan 2000 XP',unlock:'xp >= 2000'},{id:'b8',emoji:'🌟',name:'Grandmaster',desc:'Capai Level 10',unlock:'level >= 10'}];
+
+const MATERI=[{id:'m1',cat:'tips',icon:'😌',bg:'#EEF0FF',title:'Tips Mengatasi Rasa Canggung',sub:'Panduan praktis untuk semua situasi',time:'3 menit',support:24,content:`Rasa canggung adalah hal yang sangat manusiawi dan hampir semua orang merasakannya.\n\nBerikut tips praktis mengatasinya:\n\n1. **Terima perasaanmu** – Akui bahwa kamu gugup, itu normal. Menolak perasaan justru memperburuknya.\n\n2. **Fokus ke lawan bicara** – Alihkan perhatian dari dirimu ke orang lain. Tanya pertanyaan, dengarkan dengan aktif.\n\n3. **Gunakan humor ringan** – Tertawa bersama menurunkan ketegangan. Tidak harus jadi pelawak, cukup jujur dan santai.\n\n4. **Perbaiki bahasa tubuh** – Berdiri tegak, senyum tulus, dan kontak mata 3-5 detik memberikan kesan percaya diri.\n\n5. **Latihan setiap hari** – Mulai dari hal kecil: sapa kasir, tanya arah, atau beri pujian tulus pada orang lain.\n\nIngat: Semua orang pernah canggung. Yang membedakan adalah keberanian untuk tetap mencoba.`},{id:'m2',cat:'tips',icon:'💬',bg:'#F0FDF4',title:'Cara Memulai Percakapan',sub:'Panduan untuk kenalan dengan siapapun',time:'5 menit',support:31,content:`Memulai percakapan tidak perlu rumit! Berikut formula simpelnya:\n\n**Formula FORD:**\n- **F**amily – "Kamu dari mana?"\n- **O**ccupation – "Kamu kerja atau kuliah?"\n- **R**ecreation – "Waktu luang biasanya ngapain?"\n- **D**reams – "Cita-cita atau impianmu apa?"\n\n**Tips Praktis:**\n1. Mulai dengan observasi lingkungan: "Tempatnya ramai ya hari ini!"\n2. Berikan pujian tulus: "Tas kamu bagus, beli di mana?"\n3. Ajukan pertanyaan terbuka (yang tidak bisa dijawab ya/tidak)\n4. Aktif mendengarkan – tunjukkan minat nyata pada cerita mereka\n5. Mirror & match – sesuaikan energi dan tempo bicaramu\n\n**Kalimat pembuka ajaib:**\n- "Permisi, aku perlu pendapatmu soal sesuatu..."\n- "Kamu kelihatan familiar, kita pernah ketemu sebelumnya?"\n- "Aku tahu ini agak random, tapi [komentar/pertanyaan]"\n\nYang terpenting: berani mulai. Percakapan terbaik sering dimulai dari langkah kecil yang awkward.`},{id:'m3',cat:'public',icon:'🎤',bg:'#FFFBEB',title:'Teknik Public Speaking',sub:'Berbicara di depan umum dengan percaya diri',time:'8 menit',support:19,content:`Public speaking adalah skill yang BISA dipelajari, bukan bakat bawaan.\n\n**Persiapan:**\n1. Kuasai materi sampai kamu bisa menjelaskannya ke anak SD\n2. Latihan di depan cermin atau rekam video dirimu\n3. Kenali audiens – apa yang mereka butuhkan?\n4. Datang lebih awal, cek ruangan dan peralatan\n\n**Saat Berbicara:**\n1. Mulai dengan hook kuat – cerita, fakta mengejutkan, atau pertanyaan\n2. Gunakan kontak mata merata ke seluruh ruangan\n3. Bicara lebih lambat dari yang kamu kira perlu\n4. Pause adalah temanmu – jangan isi dengan "em" atau "eh"\n5. Gunakan gestur tangan yang natural dan bermakna\n\n**Atasi Gugup:**\n- Teknik 4-7-8: Hirup 4 detik, tahan 7 detik, hembus 8 detik\n- Power pose 2 menit sebelum naik panggung\n- Ingat: audiens ingin kamu sukses, bukan gagal\n\n**Rahasia utama:** Semakin sering kamu melakukannya, semakin mudah. Mulai dari berbicara di depan 2 orang, lalu 5, lalu 20.`},{id:'m4',cat:'teknik',icon:'🧍',bg:'#FFF0F3',title:'Bahasa Tubuh Positif',sub:'Tampilkan kepercayaan diri tanpa kata-kata',time:'6 menit',support:15,content:`55% komunikasi adalah bahasa tubuh. Ini berarti tubuhmu bicara sebelum mulutmu!\n\n**Power Poses:**\n- Berdiri/duduk tegak dengan bahu terbuka (jangan membungkuk)\n- Kepala sedikit ke atas, dagu tidak turun\n- Kaki selebar bahu saat berdiri\n\n**Kontak Mata:**\n- Pertahankan 3-5 detik, lalu alihkan secara natural\n- Jangan menatap terlalu lama (creepy) atau terlalu sering lihat bawah\n- Teknik segitiga: tatap mata kiri, kanan, lalu hidung secara bergantian\n\n**Gestur Tangan:**\n- Gunakan tangan untuk memperkuat kata-kata\n- Hindari menyilang tangan (tertutup) atau menyembunyikan tangan\n- Telapak tangan terbuka = tanda kejujuran dan keterbukaan\n\n**Senyum:**\n- Senyum Duchenne (mata ikut senyum) jauh lebih powerful\n- Latih senyum yang genuine di depan cermin\n\n**Hindari:**\n- Memegang HP/benda sebagai "tameng"\n- Menutup mulut saat bicara\n- Menunduk atau menghindari kontak mata`},{id:'m5',cat:'teknik',icon:'🧘',bg:'#F0FDFB',title:'Mengelola Kecemasan Sosial',sub:'Teknik efektif berdasarkan psikologi',time:'10 menit',support:28,content:`Kecemasan sosial adalah hal yang nyata dan bisa diatasi dengan pendekatan yang tepat.\n\n**Pahami Dulu:**\nKecemasan sosial bukan kelemahan karakter. Ini adalah respons otak yang belajar dari pengalaman, dan otak bisa belajar ulang.\n\n**Teknik CBT (Cognitive Behavioral Therapy):**\n1. **Identifikasi pikiran otomatis negatif**: "Mereka pasti menilai aku jelek"\n2. **Tantang pikiran itu**: "Apa buktinya? Seberapa besar kemungkinannya?"\n3. **Ganti dengan pikiran realistis**: "Mungkin mereka juga fokus pada diri sendiri"\n\n**Teknik Eksposur Bertahap:**\n- Minggu 1: Sapa 1 orang per hari\n- Minggu 2: Mulai 1 percakapan singkat\n- Minggu 3: Bergabung dalam grup kecil\n- Minggu 4: Hadiri acara sosial 15 menit\n\n**Grounding 5-4-3-2-1:**\nSaat panik: Sebutkan 5 hal yang dilihat, 4 yang didengar, 3 yang disentuh, 2 yang dicium, 1 yang dirasakan.\n\n**Self-Talk Positif:**\nGanti "Aku harus sempurna" dengan "Aku berani mencoba dan itu sudah luar biasa."\n\nIngat: Progress, bukan perfeksi.`},{id:'m6',cat:'mindset',icon:'🧠',bg:'#F0F0FF',title:'Growth Mindset dalam Sosial',sub:'Pola pikir yang mengubah segalanya',time:'7 menit',support:22,content:`Perbedaan antara orang yang berkembang dan yang stagnan seringkali bukan bakat, tapi MINDSET.\n\n**Fixed vs Growth Mindset:**\nFixed: "Aku memang pemalu" → Growth: "Aku sedang belajar bersikap terbuka"\nFixed: "Aku gagal lagi" → Growth: "Aku baru tahu apa yang tidak berhasil"\nFixed: "Mereka lebih pintar" → Growth: "Aku bisa belajar dari mereka"\n\n**Prinsip Growth Mindset Sosial:**\n1. Setiap interaksi sosial adalah latihan, bukan ujian\n2. Canggung itu tanda kamu sedang berkembang\n3. Rejection bukan tentang kamu, ini tentang fit/match\n4. Setiap orang punya ceritanya sendiri – jangan bandingkan\n\n**Reframe Kegagalan Sosial:**\n- Percakapan yang awkward? → "Aku dapat pengalaman berharga"\n- Ditolak seseorang? → "Bukan orang yang tepat, next!"\n- Lupa mau bicara apa? → "Aku belajar untuk lebih siap"\n\n**Daily Practice:**\n- Tulis 1 hal yang berjalan baik setiap hari\n- Rayakan keberanian, bukan hanya keberhasilan\n\nKamu sudah hebat karena berani mencoba!`}];
+
+const DAILY_CHALLENGES=[{title:'Sapa 1 Orang Baru',desc:'Sapa tetangga, kasir, atau siapapun yang kamu temui hari ini!',xp:20,icon:'👋'},{title:'Berikan Pujian Tulus',desc:'Berikan pujian yang tulus dan spesifik ke seseorang hari ini.',xp:20,icon:'🌟'},{title:'Tanya Kabar Seseorang',desc:'Hubungi teman atau keluarga, tanyakan kabar mereka.',xp:15,icon:'💬'},{title:'Mulai Percakapan Kecil',desc:'Obrol santai dengan kasir, tukang parkir, atau orang di antrean.',xp:25,icon:'🗣️'},{title:'Hadiri Acara Sosial',desc:'Ikuti gathering, arisan, atau kumpul-kumpul minimal 15 menit.',xp:40,icon:'🎉'},{title:'Tulis Jurnal Perasaan',desc:'Catat perasaan dan pengalamanmu hari ini di jurnal.',xp:10,icon:'📓'},{title:'Latihan Pernapasan',desc:'Lakukan teknik napas 4-7-8 selama 5 menit untuk mengurangi kecemasan.',xp:15,icon:'🧘'}];
+
+const EXTRA_CHALLENGES=[{title:'Latihan AI 10 Menit',desc:'Ikuti sesi latihan percakapan AI hari ini',xp:30,icon:'🤖',action:'navTo("p-latihan")'},{title:'Baca 1 Materi',desc:'Pelajari satu topik baru dari perpustakaan materi',xp:10,icon:'📚',action:'navTo("p-materi")'},{title:'Post di Komunitas',desc:'Bagikan cerita atau tanya sesuatu di komunitas',xp:15,icon:'🏘️',action:'openNewPost()'}];
+
+const FAQS=[{q:'Bagaimana cara mendapatkan XP?',a:'XP diperoleh dari menyelesaikan latihan AI (30-70 XP), daily challenge (15-40 XP), membaca materi (+10 XP), dan aktif di komunitas (+15 XP). Semakin sering berlatih, semakin cepat level naik!'},{q:'Bagaimana sistem level bekerja?',a:'Level naik otomatis setelah XP kamu mencapai ambang batas. Level berkisar dari 1 (Pemula) hingga 10 (Grandmaster). Setiap naik level, kamu mendapat notifikasi dan badge pencapaian!'},{q:'Apa itu Daily Challenge?',a:'Daily Challenge adalah tantangan harian nyata di kehidupan sehari-harimu. Setelah mencoba, tekan tombol "Saya Sudah Mencoba!" untuk mendapat XP dan menjaga streak-mu.'},{q:'Bagaimana cara kerja AI Chat?',a:'AI berperan sebagai lawan bicara dalam berbagai skenario nyata. Kamu memilih respons atau mengetik sendiri. AI akan merespons secara natural dan di akhir sesi kamu mendapat penilaian serta saran.'},{q:'Apakah data saya aman?',a:'Semua data tersimpan di perangkatmu sendiri (localStorage) dan tidak dikirim ke server manapun. Mode anonim di komunitas juga memastikan identitasmu terlindungi.'},{q:'Apa yang terjadi jika streak terputus?',a:'Streak-mu akan kembali ke 0 jika melewatkan satu hari. Tapi XP yang sudah kamu kumpulkan tidak hilang! Semangat untuk mulai streak baru.'},{q:'Bagaimana cara ganti nama?',a:'Kamu bisa ganti nama di halaman Profil → Ganti Nama, atau di Pengaturan → Ganti Nama. Nama baru akan langsung tampil di seluruh aplikasi.'}];
+
+const MOTIVASI=[{text:"Konsistensi kecil setiap hari = perubahan besar!",sub:"Kamu sudah selangkah lebih maju dari kemarin."},{text:"Keberanian bukan tidak ada rasa takut.",sub:"Keberanian adalah melangkah meski takut."},{text:"Setiap percakapan adalah latihan.",sub:"Tidak ada yang sia-sia dari setiap upaya yang kamu buat."},{text:"Kamu lebih kuat dari yang kamu kira.",sub:"Perjalanan seribu mil dimulai dari satu langkah."},{text:"Progress bukan perfeksi.",sub:"Yang penting bukan hasil sempurna, tapi keberanian mencoba."}];
+
+const INITIAL_POSTS=[{name:'Anonim',initials:'A',color:'#5B5EF4',time:'2 jam lalu',text:'Tips mengatasi gugup saat bicara dengan orang baru: tarik napas dalam dan ingat bahwa mereka juga bisa gugup. Kita semua manusia! 💙',likes:24,comments:3,liked:false},{name:'Butterfly',initials:'B',color:'#10B981',time:'5 jam lalu',text:'Aku sangat takut berbicara di depan orang banyak! Adakah yang punya tips? Sering blank dan lupa semua yang mau disampaikan 😅',likes:12,comments:8,liked:false},{name:'Langkah Kecil',initials:'L',color:'#F59E0B',time:'1 hari lalu',text:'Baru baca materi bahasa tubuh positif – ternyata cara kita berdiri dan menatap orang bisa sangat mempengaruhi kepercayaan diri. Worth it banget!',likes:31,comments:5,liked:false},{name:'Rising Up',initials:'R',color:'#F43F5E',time:'2 hari lalu',text:'Hari ini aku berhasil memulai percakapan dengan orang asing pertama kali! Awalnya jantung mau copot, tapi ternyata orangnya ramah banget. Terima kasih SocialUp! 🎉',likes:45,comments:12,liked:false}];
+
+// ═══════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════
+let state = {
+  user:null, xp:0, sessions:0, streak:0, dcDone:[],
+  riwayat:[], posts:[...INITIAL_POSTS], jurnal:[], materi_done:[],
+  extra_done:[], chat_done:{}, dark:false, comfort:null,
+  lastDCDate:null, lastActive:null,
+};
+
+function loadState(){try{const s=localStorage.getItem('su_web_state');if(s)state={...state,...JSON.parse(s)};}catch(e){}}
+function saveState(){try{localStorage.setItem('su_web_state',JSON.stringify(state));}catch(e){}}
+function getLevel(xp){for(let i=0;i<LEVELS.length;i++){if(xp<LEVELS[i].max)return{level:i+1,...LEVELS[i]};}return{level:10,...LEVELS[9]};}
+
+function addXP(amount, reason='', icon='⚡'){
+  const oldLv=getLevel(state.xp).level;
+  state.xp+=amount;
+  const newLv=getLevel(state.xp).level;
+  saveState();
+  showXPPopup(amount, newLv>oldLv?newLv:null);
+  addRiwayat(reason||'Aktivitas', amount, icon);
+  updateUI();
+  if(newLv>oldLv) setTimeout(()=>showLevelUp(newLv),1200);
+}
+
+function addRiwayat(name, xp, icon='⚡'){
+  state.riwayat.unshift({name,xp,icon,date:new Date().toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})});
+  if(state.riwayat.length>50) state.riwayat.pop();
+  saveState();
+}
+
+// ═══════════════════════════════════════════════════
+// SCREEN NAV
+// ═══════════════════════════════════════════════════
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ═══════════════════════════════════════════════════
+// ONBOARDING
+// ═══════════════════════════════════════════════════
+const OB_DATA=[{illus:'🧗',title:'Jadi versi terbaik dirimu',desc:'Bangun kepercayaan diri dan kemampuan sosialmu secara bertahap dengan latihan interaktif setiap hari.'},{illus:'🤖',title:'Latihan tanpa tekanan',desc:'Belajar lewat AI interaktif, skenario nyata, dan tantangan seru setiap hari.'},{illus:'📈',title:'Lihat progresmu berkembang',desc:'Sistem XP dan level yang real – setiap latihan memberikan reward nyata.'},{illus:'👥',title:'Kamu tidak sendirian',desc:'Bergabung dengan komunitas yang supportif dan saling mendukung.'}];
+let obIdx=0;
+(function initOB(){const dots=document.getElementById('ob-dots');OB_DATA.forEach((_,i)=>{const d=document.createElement('div');d.className='ob-dot'+(i===0?' active':'');dots.appendChild(d);});})();
+
+function obNext(){obIdx++;if(obIdx>=OB_DATA.length){go('s-comfort');return;}const d=OB_DATA[obIdx];document.getElementById('ob-illus').textContent=d.illus;document.getElementById('ob-title').textContent=d.title;document.getElementById('ob-desc').textContent=d.desc;document.querySelectorAll('.ob-dot').forEach((dot,i)=>dot.classList.toggle('active',i===obIdx));if(obIdx===OB_DATA.length-1)document.getElementById('ob-btn').textContent='Mulai ✨';}
+
+function selectComfort(el,val){const parent=el.closest('.comfort-emojis');parent.querySelectorAll('.comfort-emoji').forEach(e=>e.classList.remove('selected'));el.classList.add('selected');if(val)state.comfort=val;const btn=document.getElementById('comfort-next-btn');if(btn){btn.disabled=false;btn.style.opacity='1';btn.style.cursor='pointer';}}
+
+// ═══════════════════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════════════════
+let regTab='email';
+function switchRegTab(t){regTab=t;document.getElementById('tab-email').classList.toggle('active',t==='email');document.getElementById('tab-hp').classList.toggle('active',t==='hp');document.getElementById('reg-email-group').style.display=t==='email'?'':'none';document.getElementById('reg-hp-group').style.display=t==='hp'?'':'none';}
+
+function checkStrength(val){const bar=document.getElementById('strength-bar'),fill=document.getElementById('strength-fill'),hint=document.getElementById('strength-hint'),txt=document.getElementById('strength-text');if(!val){bar.style.display='none';hint.style.display='none';return;}bar.style.display='block';hint.style.display='block';let score=0;if(val.length>=6)score++;if(val.length>=8)score++;if(/[A-Z]/.test(val))score++;if(/[0-9]/.test(val))score++;if(/[^A-Za-z0-9]/.test(val))score++;const colors=['#F43F5E','#F59E0B','#F59E0B','#10B981','#10B981'],labels=['Sangat Lemah','Lemah','Sedang','Kuat','Sangat Kuat'];fill.style.width=(score/5*100)+'%';fill.style.background=colors[score-1]||'#F43F5E';txt.textContent=labels[score-1]||'Sangat Lemah';txt.style.color=colors[score-1]||'#F43F5E';}
+
+function doRegister(){const name=document.getElementById('reg-name').value.trim(),email=regTab==='email'?document.getElementById('reg-email').value.trim():document.getElementById('reg-hp').value.trim(),kota=document.getElementById('reg-kota').value.trim(),pass=document.getElementById('reg-pass').value,pass2=document.getElementById('reg-pass2').value;if(!name){showToast('Nama lengkap wajib diisi','error');return;}if(!email){showToast(regTab==='email'?'Email wajib diisi':'Nomor HP wajib diisi','error');return;}if(regTab==='email'&&!email.includes('@')){showToast('Format email tidak valid','error');return;}if(!kota){showToast('Kota tempat tinggal wajib diisi','error');return;}if(pass.length<6){showToast('Password minimal 6 karakter','error');return;}if(pass!==pass2){showToast('Konfirmasi password tidak cocok','error');return;}state.user={name,email,kota};saveState();document.getElementById('verify-email-show').textContent=email;startResendTimer();go('s-verify');}
+
+function doLogin(){const email=document.getElementById('login-email').value.trim(),pass=document.getElementById('login-pass').value;if(!email||!pass){showToast('Isi email dan password','error');return;}if(!email.includes('@')){showToast('Format email tidak valid','error');return;}state.user=state.user||{name:'Ian',email,kota:'Malang'};saveState();enterApp();}
+
+function quickDemo(){state.user={name:'Demo',email:'demo@socialup.id',kota:'Demo'};state.xp=0;state.sessions=0;state.streak=0;saveState();enterApp();showToast('Mode Demo aktif! Semua fitur tersedia 🎮','info');}
+
+// OTP
+let resendTimer;
+function startResendTimer(){let count=30;const btn=document.getElementById('resend-btn'),cd=document.getElementById('resend-countdown');btn.disabled=true;clearInterval(resendTimer);resendTimer=setInterval(()=>{count--;if(cd)cd.textContent=count;if(count<=0){clearInterval(resendTimer);if(btn)btn.disabled=false;}},1000);}
+function startResend(){showToast('Kode baru dikirim!','success');startResendTimer();}
+function otpInput(el,idx){el.classList.toggle('filled',el.value.length>0);if(el.value){const inputs=document.querySelectorAll('.otp-input');if(inputs[idx+1])inputs[idx+1].focus();const vals=[...document.querySelectorAll('.otp-input')].map(i=>i.value);if(vals.every(v=>v))setTimeout(doVerify,300);}}
+function otpKeydown(el,idx){if(event.key==='Backspace'&&!el.value){const inputs=document.querySelectorAll('.otp-input');if(inputs[idx-1]){inputs[idx-1].focus();inputs[idx-1].value='';inputs[idx-1].classList.remove('filled');}}}
+function doVerify(){const vals=[...document.querySelectorAll('.otp-input')].map(i=>i.value);if(vals.some(v=>!v)){showToast('Masukkan kode OTP lengkap','error');return;}showToast('Email berhasil diverifikasi! ✅','success');go('s-profile-info');}
+
+function selGender(g){['l','p','o'].forEach(x=>{const el=document.getElementById('pg-'+x);if(el)el.classList.toggle('active',x===g);});if(state.user)state.user.gender=g;}
+function updateSliderLabel(v){document.getElementById('slider-val').textContent=v+'/10';}
+function toggleGoal(el){el.classList.toggle('selected');}
+
+// ═══════════════════════════════════════════════════
+// ENTER APP
+// ═══════════════════════════════════════════════════
+function enterApp(){
+  go('s-app');
+  checkDailyStreak();
+  renderAll();
+  navTo('p-home');
+}
+
+function renderAll(){
+  updateUI();
+  buildDCCalendar();
+  renderScenarios();
+  renderMateri();
+  renderPosts();
+  renderAchievements();
+  renderRiwayat();
+  renderFAQ();
+  renderProgress();
+  renderHomeChallenges();
+}
+
+// ═══════════════════════════════════════════════════
+// UPDATE ALL UI
+// ═══════════════════════════════════════════════════
+function updateUI(){
+  if(!state.user)return;
+  const name=state.user.name||'Pengguna';
+  const lv=getLevel(state.xp);
+  const xpInLevel=state.xp-lv.min;
+  const xpNeeded=lv.max===Infinity?0:lv.max-lv.min;
+  const pct=xpNeeded>0?Math.round(xpInLevel/xpNeeded*100):100;
+  const confidence=Math.min(100,Math.round(state.sessions*4+state.streak*2));
+
+  // Topbar
+  const txp=document.getElementById('topbar-xp');const tstr=document.getElementById('topbar-streak');
+  if(txp)txp.innerHTML=`⚡ ${state.xp} XP`;
+  if(tstr)tstr.textContent=`🔥 ${state.streak} Hari`;
+
+  // Sidebar
+  const sa=document.getElementById('sidebar-ava'),sn=document.getElementById('sidebar-name'),sl=document.getElementById('sidebar-level');
+  if(sa)sa.textContent=name[0].toUpperCase();
+  if(sn)sn.textContent=name;
+  if(sl)sl.textContent=`Level ${lv.level} · ${lv.name}`;
+
+  // Hero
+  const hn=document.getElementById('hero-name'),hlb=document.getElementById('hero-level-badge'),xt=document.getElementById('xp-text'),xp2=document.getElementById('xp-percent'),xf=document.getElementById('xp-fill'),sc=document.getElementById('stat-confidence'),ss=document.getElementById('stat-sessions'),sst=document.getElementById('stat-streak');
+  if(hn)hn.textContent=`Hai, ${name}!`;
+  if(hlb)hlb.textContent=`${lv.badge} Level ${lv.level} – ${lv.name}`;
+  if(xt)xt.textContent=`${state.xp} / ${lv.max===Infinity?'∞':lv.max} XP`;
+  if(xp2)xp2.textContent=pct+'%';
+  if(xf)xf.style.width=pct+'%';
+  if(sc)sc.textContent=confidence+'%';
+  if(ss)ss.textContent=state.sessions;
+  if(sst)sst.textContent=state.streak+'🔥';
+  const hbb=document.getElementById('hero-badge-big');if(hbb)hbb.textContent=lv.badge;
+
+  // Streak card
+  const sf=document.getElementById('streak-fill'),st2=document.getElementById('streak-text'),sg=document.getElementById('streak-goal'),dcs=document.getElementById('dc-streak');
+  if(sf)sf.style.width=Math.min(100,state.streak/7*100)+'%';
+  if(st2)st2.textContent=state.streak+' Hari Streak';
+  if(sg)sg.textContent=state.streak+'/7';
+  if(dcs)dcs.textContent=state.streak;
+
+  // Profil
+  const pn=document.getElementById('profil-name'),plt=document.getElementById('profil-level-text'),pa=document.getElementById('profil-ava'),psx=document.getElementById('ps-xp'),pss=document.getElementById('ps-sessions'),pstr=document.getElementById('ps-streak');
+  if(pn)pn.textContent=name;
+  if(plt)plt.textContent=`Level ${lv.level} · ${lv.name}`;
+  if(pa)pa.textContent=name[0]?name[0].toUpperCase():'🧑';
+  if(psx)psx.textContent=state.xp;
+  if(pss)pss.textContent=state.sessions;
+  if(pstr)pstr.textContent=state.streak+'🔥';
+
+  // Post modal
+  const posta=document.getElementById('post-ava'),postn=document.getElementById('post-author-name');
+  if(posta)posta.textContent=name[0]||'?';
+  if(postn)postn.textContent=name;
+
+  // Profil summary
+  const psumm=document.getElementById('profil-summary');
+  if(psumm)psumm.innerHTML=`📅 Bergabung: ${new Date().toLocaleDateString('id-ID',{month:'long',year:'numeric'})}<br>🏙️ Kota: ${state.user.kota||'–'}<br>📧 Email: ${state.user.email||'–'}<br>🎯 Level: ${lv.name} ${lv.badge}<br>🔥 Streak tertinggi: ${state.streak} hari`;
+
+  // Level detail
+  const ld=document.getElementById('level-detail');
+  if(ld){const next=LEVELS[lv.level]||null;ld.innerHTML=`<strong style="color:var(--text)">Level ${lv.level}: ${lv.name} ${lv.badge}</strong><br>XP saat ini: <strong style="color:var(--indigo)">${state.xp}</strong><br>${next?`XP ke Level ${lv.level+1}: <strong style="color:var(--indigo)">${lv.max-state.xp} lagi</strong>`:'<strong style="color:var(--green)">Level Maksimum Tercapai! 🏆</strong>'}<br>Total sesi: <strong style="color:var(--text)">${state.sessions}</strong>`;}
+
+  // Dark mode sync
+  const ds=document.getElementById('dark-settings');if(ds)ds.checked=state.dark;
+  const di=document.getElementById('dark-icon');if(di)di.className=state.dark?'bi bi-sun-fill':'bi bi-moon-stars-fill';
+}
+
+// ═══════════════════════════════════════════════════
+// APP NAV
+// ═══════════════════════════════════════════════════
+const PAGE_TITLES={'p-home':'Beranda','p-progress':'Progress','p-latihan':'Latihan AI','p-chat':'AI Chat','p-hasil':'Hasil Latihan','p-daily':'Daily Challenge','p-materi':'Materi Belajar','p-komunitas':'Komunitas','p-achievement':'Pencapaian','p-profil':'Profil','p-riwayat':'Riwayat Aktivitas','p-privacy':'Privasi & Keamanan','p-faq':'Bantuan & FAQ','p-fitur':'Fitur Tambahan','p-settings':'Pengaturan'};
+const NAV_IDS={'p-home':'nav-home','p-progress':'nav-progress','p-latihan':'nav-latihan','p-chat':'nav-latihan','p-hasil':'nav-latihan','p-daily':'nav-daily','p-materi':'nav-materi','p-komunitas':'nav-komunitas','p-achievement':'nav-achievement','p-profil':'nav-profil','p-riwayat':'nav-profil','p-privacy':'nav-profil','p-faq':'nav-profil','p-fitur':'nav-profil','p-settings':'nav-settings'};
+
+function navTo(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const pg=document.getElementById(id);if(pg)pg.classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(n=>n.classList.remove('active'));
+  const nid=NAV_IDS[id];if(nid){const el=document.getElementById(nid);if(el)el.classList.add('active');}
+  const tt=document.getElementById('topbar-title');if(tt)tt.textContent=PAGE_TITLES[id]||'';
+  document.querySelector('.content-scroll').scrollTop=0;
+  if(id==='p-progress')renderProgress();
+  if(id==='p-riwayat')renderRiwayat();
+  if(id==='p-achievement')renderAchievements();
+  if(id==='p-profil')updateUI();
+}
+
+// ═══════════════════════════════════════════════════
+// AI CHAT
+// ═══════════════════════════════════════════════════
+let currentScenario=null,chatStep=0,chatDone=false,chatEval={clarity:0,confidence:0,tone:0,fluency:0};
+
+function renderScenarios(){
+  const grid=document.getElementById('scenario-grid');if(!grid)return;
+  grid.innerHTML=SCENARIOS.map(s=>{const done=state.chat_done[s.id]>0;return`<div class="scenario-card${done?' done':''}" onclick="startChat('${s.id}')"><span class="sc-icon">${s.icon}</span><div class="sc-name">${s.name}</div><div class="sc-sub">${s.sub}</div><div class="sc-xp">+${s.xp} XP</div>${done?'<div style="font-size:.7rem;color:var(--green);margin-top:4px;font-weight:700">✓ Sudah pernah</div>':''}</div>`;}).join('');
+}
+
+function renderQuickScenarios(){
+  const el=document.getElementById('quick-scenarios');if(!el)return;
+  el.innerHTML=SCENARIOS.filter(s=>s.id!==currentScenario?.id).slice(0,3).map(s=>`<div onclick="startChat('${s.id}')" style="padding:8px 10px;border-radius:10px;background:var(--bg);cursor:pointer;font-size:.8rem;font-weight:600;color:var(--text);display:flex;align-items:center;gap:8px;transition:.2s;border:1px solid var(--border)" onmouseover="this.style.borderColor='var(--indigo)'" onmouseout="this.style.borderColor='var(--border)'">${s.icon} ${s.name} <span style="margin-left:auto;font-size:.7rem;color:var(--indigo)">+${s.xp}</span></div>`).join('');
+}
+
+function startChat(scenarioId){
+  currentScenario=SCENARIOS.find(s=>s.id===scenarioId);
+  chatStep=0;chatDone=false;chatEval={clarity:0,confidence:0,tone:0,fluency:0};
+  const t1=document.getElementById('chat-scene-title'),t1h=document.getElementById('chat-scene-title-h'),t2=document.getElementById('chat-scene-sub'),xp=document.getElementById('chat-xp-pill');
+  if(t1)t1.textContent=`Latihan: ${currentScenario.name}`;
+  if(t1h)t1h.textContent=currentScenario.name;
+  if(t2)t2.textContent=currentScenario.sub;
+  if(xp)xp.textContent=`+${currentScenario.xp} XP`;
+  const steps=document.getElementById('chat-steps');if(steps)steps.innerHTML=currentScenario.turns.map((_,i)=>`<div class="c-step" id="cs-${i}"></div>`).join('');
+  const msgs=document.getElementById('chat-messages');if(msgs)msgs.innerHTML='';
+  const opts=document.getElementById('chat-options');if(opts)opts.innerHTML='';
+  const inp=document.getElementById('chat-text');if(inp){inp.value='';inp.disabled=false;}
+  const si=document.getElementById('chat-scenario-info');if(si)si.textContent=currentScenario.name;
+  const tips=['Pilih respons yang paling natural. Tidak ada jawaban yang salah!','Coba tambahkan pertanyaan balik untuk membuat percakapan lebih hidup.','Perhatikan nada bicara – santai dan friendly selalu berhasil!'];
+  const ct=document.getElementById('chat-tips');if(ct)ct.textContent=tips[Math.floor(Math.random()*tips.length)];
+  navTo('p-chat');
+  renderQuickScenarios();
+  setTimeout(()=>showAIMessage(0),400);
+}
+
+function showAIMessage(idx){
+  if(idx>=currentScenario.turns.length){finishChat();return;}
+  chatStep=idx;updateSteps();
+  const turn=currentScenario.turns[idx];
+  const name=state.user?state.user.name:'Kamu',kota=state.user?(state.user.kota||'kotamu'):'kotamu';
+  const aiText=turn.ai.replace('{name}',name).replace('{kota}',kota);
+  showTyping();
+  setTimeout(()=>{removeTyping();addMsg(aiText,'ai');if(!chatDone)showOptions(idx,name,kota);const spi=document.getElementById('chat-step-info');if(spi)spi.textContent=`${idx+1} / ${currentScenario.turns.length}`;},700+Math.random()*400);
+}
+
+function showTyping(){const msgs=document.getElementById('chat-messages');if(!msgs)return;const d=document.createElement('div');d.className='msg-typing';d.id='typing-indicator';d.innerHTML='<div class="typing-dots"><span></span><span></span><span></span></div>';msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;}
+function removeTyping(){const t=document.getElementById('typing-indicator');if(t)t.remove();}
+
+function showOptions(idx,name,kota){const turn=currentScenario.turns[idx],opts=document.getElementById('chat-options');if(!opts)return;opts.innerHTML=turn.opts.map(o=>{const txt=o.replace('{name}',name).replace('{kota}',kota);return`<button class="chat-option" onclick="selectChatOption('${encodeURIComponent(txt)}')">${txt}</button>`;}).join('');}
+
+function selectChatOption(enc){const text=decodeURIComponent(enc);const opts=document.getElementById('chat-options');if(opts)opts.innerHTML='';sendChatMessage(text);}
+function sendChat(){const inp=document.getElementById('chat-text');if(!inp)return;const text=inp.value.trim();if(!text)return;inp.value='';const opts=document.getElementById('chat-options');if(opts)opts.innerHTML='';sendChatMessage(text);}
+
+function sendChatMessage(text){
+  addMsg(text,'user');
+  const score=evaluateResponse(text);
+  chatEval.clarity+=score.clarity;chatEval.confidence+=score.confidence;chatEval.tone+=score.tone;chatEval.fluency+=score.fluency;
+  setTimeout(()=>{if(chatStep<currentScenario.turns.length-1)showAIMessage(chatStep+1);else finishChat();},200);
+}
+
+function evaluateResponse(text){const len=text.length,hasQ=text.includes('?'),hasPunct=/[!.?]$/.test(text),words=text.split(' ').length;return{clarity:Math.min(100,60+words*3+(hasPunct?10:0)),confidence:Math.min(100,55+words*2+(hasQ?15:0)),tone:Math.min(100,65+(text.includes('!')?15:0)+(text.includes('haha')||text.includes('😊')?10:0)),fluency:Math.min(100,60+len/2)};}
+
+function updateSteps(){currentScenario.turns.forEach((_,i)=>{const el=document.getElementById('cs-'+i);if(el)el.classList.toggle('done',i<=chatStep);});}
+
+function finishChat(){
+  chatDone=true;
+  const inp=document.getElementById('chat-text');if(inp)inp.disabled=true;
+  const opts=document.getElementById('chat-options');if(opts)opts.innerHTML='';
+  addMsg('🎉 Latihan selesai! Bagus sekali! Lihat hasilmu ya...','ai');
+  setTimeout(()=>showResults(),1200);
+}
+
+function showResults(){
+  const n=currentScenario.turns.length;
+  const clarity=Math.round(chatEval.clarity/n),confidence=Math.round(chatEval.confidence/n),tone=Math.round(chatEval.tone/n),fluency=Math.round(chatEval.fluency/n);
+  const total=Math.round((clarity+confidence+tone+fluency)/4);
+  const rs=document.getElementById('result-score');if(rs)rs.textContent=total;
+  const arc=document.getElementById('score-arc');if(arc)setTimeout(()=>{arc.style.strokeDashoffset=314-(314*total/100);},100);
+  let grade,msg,feedback;
+  if(total>=90){grade='Luar Biasa! 🌟';msg='Kamu sangat natural dan percaya diri!';feedback='Pertahankan cara bicaramu yang natural. Kamu sudah menguasai skenario ini dengan sangat baik! Coba tantangan yang lebih sulit.';}
+  else if(total>=75){grade='Bagus Sekali! 🎉';msg='Kamu merespons dengan baik dan percaya diri!';feedback='Kamu sudah bagus! Untuk lebih baik lagi, coba tambahkan pertanyaan balik agar percakapan lebih mengalir.';}
+  else if(total>=60){grade='Cukup Baik! 👍';msg='Ada kemajuan! Terus berlatih ya.';feedback='Kamu sudah di jalur yang benar! Fokus pada memberikan respons yang lebih panjang dan detail.';}
+  else{grade='Ayo Coba Lagi! 💪';msg='Setiap latihan membuatmu lebih baik.';feedback='Jangan menyerah! Coba baca kembali pilihan jawaban dan pikirkan apa yang paling natural. Latihan membuat sempurna!';}
+  const rg=document.getElementById('result-grade'),rm=document.getElementById('result-msg'),rf=document.getElementById('result-feedback');
+  if(rg)rg.textContent=grade;if(rm)rm.textContent=msg;if(rf)rf.textContent=feedback;
+  const ra=document.getElementById('result-aspects');
+  if(ra)ra.innerHTML=[{name:'Kejelasan Jawaban',val:clarity},{name:'Kepercayaan Diri',val:confidence},{name:'Sikap & Nada',val:tone},{name:'Kelancaran',val:fluency}].map(a=>`<div class="aspect-row"><span class="aspect-name">${a.name}</span><div class="aspect-bar"><div class="aspect-fill" style="width:${a.val}%"></div></div><span class="aspect-val">${a.val}</span></div>`).join('');
+  navTo('p-hasil');
+  const xpEarned=Math.round(currentScenario.xp*total/100);
+  state.sessions++;state.chat_done[currentScenario.id]=(state.chat_done[currentScenario.id]||0)+1;saveState();
+  addXP(xpEarned,`Latihan: ${currentScenario.name}`,'🤖');
+  renderScenarios();
+}
+
+function replayChat(){if(currentScenario)startChat(currentScenario.id);else navTo('p-latihan');}
+
+function addMsg(text,type){const msgs=document.getElementById('chat-messages');if(!msgs)return;const d=document.createElement('div');d.className=`msg msg-${type}`;d.textContent=text;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;}
+
+// ═══════════════════════════════════════════════════
+// DAILY CHALLENGE
+// ═══════════════════════════════════════════════════
+function checkDailyStreak(){const today=new Date().toDateString(),yesterday=new Date(Date.now()-86400000).toDateString();if(!state.lastActive){}else if(state.lastActive===yesterday){}else if(state.lastActive!==today)state.streak=0;state.lastActive=today;saveState();}
+
+function buildDCCalendar(){
+  const cal=document.getElementById('dc-cal');if(!cal)return;
+  cal.innerHTML='';
+  const days=['Min','Sen','Sel','Rab','Kam','Jum','Sab'];
+  days.forEach(d=>{const el=document.createElement('div');el.className='dc-day';el.textContent=d;cal.appendChild(el);});
+  const today=new Date();
+  const startDay=new Date(today.getFullYear(),today.getMonth(),1).getDay();
+  for(let i=0;i<startDay;i++){cal.appendChild(document.createElement('div'));}
+  for(let d=1;d<=today.getDate()+3;d++){const el=document.createElement('div');el.className='dc-date';el.textContent=d;const ds=new Date(today.getFullYear(),today.getMonth(),d).toDateString();if(d===today.getDate())el.classList.add('today');else if(state.dcDone.includes(ds))el.classList.add('done');else if(d<today.getDate())el.classList.add('missed');cal.appendChild(el);}
+
+  const chIdx=today.getDate()%DAILY_CHALLENGES.length,ch=DAILY_CHALLENGES[chIdx],todayStr=today.toDateString(),done=state.dcDone.includes(todayStr);
+  const dct=document.getElementById('dc-title'),dcd=document.getElementById('dc-desc'),dcb=document.getElementById('dc-btn');
+  if(dct)dct.textContent=ch.title;if(dcd)dcd.textContent=ch.desc;
+  if(dcb){if(done){dcb.textContent='✅ Sudah Selesai Hari Ini!';dcb.disabled=true;}else{dcb.textContent='✅ Saya Sudah Mencoba!';dcb.disabled=false;}}
+
+  const extra=document.getElementById('extra-challenges');
+  if(extra)extra.innerHTML=EXTRA_CHALLENGES.map((c,i)=>{const done2=state.extra_done.includes(today.toDateString()+'-'+i);return`<div class="challenge-item" onclick="${done2?'':c.action}" style="${done2?'opacity:.6':'cursor:pointer'}"><div class="ch-icon" style="background:#EEF0FF">${c.icon}</div><div class="ch-meta"><strong>${c.title}</strong><span>${c.desc}</span></div><span class="xp-pill${done2?' done':''}">${done2?'✓ Done':'+'+c.xp+' XP'}</span></div>`;}).join('');
+}
+
+function completeDC(){
+  const today=new Date().toDateString();
+  if(state.dcDone.includes(today)){showToast('Kamu sudah menyelesaikan tantangan hari ini!','info');return;}
+  state.dcDone.push(today);
+  const yesterday=new Date(Date.now()-86400000).toDateString();
+  if(state.lastDCDate===yesterday||!state.lastDCDate)state.streak++;
+  else if(state.lastDCDate!==today)state.streak=1;
+  state.lastDCDate=today;state.lastActive=today;saveState();
+  const chIdx=new Date().getDate()%DAILY_CHALLENGES.length,ch=DAILY_CHALLENGES[chIdx];
+  addXP(ch.xp,`Daily Challenge: ${ch.title}`,'📅');
+  buildDCCalendar();updateUI();
+}
+
+// ═══════════════════════════════════════════════════
+// PROGRESS
+// ═══════════════════════════════════════════════════
+let progressPeriod=7;
+function switchPTab(el,period){document.querySelectorAll('.progress-tabs .p-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');progressPeriod=parseInt(period);renderProgress();}
+
+function renderProgress(){
+  const confidence=Math.min(100,Math.round(state.sessions*4+state.streak*2));
+  const n=progressPeriod===7?7:progressPeriod===30?8:6;
+  const pts=Array.from({length:n},(_,i)=>{const base=Math.max(10,confidence-(n-1-i)*8+Math.floor(Math.random()*10-3));return Math.min(100,Math.max(5,base));});
+  pts[pts.length-1]=confidence;
+  const W=320,H=110,PAD=10,xs=pts.map((_,i)=>PAD+i*(W-PAD*2)/(n-1)),ys=pts.map(p=>H-PAD-(p/100)*(H-PAD*2));
+  const lineD=xs.map((x,i)=>(i===0?'M':'L')+x+' '+ys[i]).join(' ');
+  const areaD=lineD+` L${xs[xs.length-1]} ${H} L${xs[0]} ${H} Z`;
+  const cl=document.getElementById('chart-line'),ca=document.getElementById('chart-area'),cd=document.getElementById('chart-dot'),cb=document.getElementById('conf-badge');
+  if(cl)cl.setAttribute('d',lineD);if(ca)ca.setAttribute('d',areaD);
+  if(cd){cd.setAttribute('cx',xs[xs.length-1]);cd.setAttribute('cy',ys[ys.length-1]);}
+  if(cb)cb.textContent=confidence+'%';
+  const labels=document.getElementById('chart-labels');
+  if(labels){const now=new Date();labels.innerHTML=Array.from({length:Math.min(n,5)},(_,i)=>{const idx=Math.floor(i*(n-1)/(Math.min(n,5)-1));const d=new Date(now-(n-1-idx)*24*3600000);return`<span>${d.getDate()}/${d.getMonth()+1}</span>`;}).join('');}
+  const stats=document.getElementById('progress-stats');
+  if(stats)stats.innerHTML=[{val:state.sessions,lbl:'Latihan<br>Selesai'},{val:state.dcDone.length,lbl:'Tantangan<br>Selesai'},{val:state.streak+'🔥',lbl:'Streak<br>Hari Ini'}].map(s=>`<div class="stat-box"><span class="val">${s.val}</span><span class="lbl">${s.lbl}</span></div>`).join('');
+  const mot=MOTIVASI[Math.floor(Math.random()*MOTIVASI.length)];
+  const mt=document.getElementById('motivasi-text'),ms=document.getElementById('motivasi-sub');
+  if(mt)mt.textContent=mot.text;if(ms)ms.textContent=mot.sub;
+}
+
+// ═══════════════════════════════════════════════════
+// HOME CHALLENGES
+// ═══════════════════════════════════════════════════
+function renderHomeChallenges(){
+  const today=new Date().toDateString(),chIdx=new Date().getDate()%DAILY_CHALLENGES.length,ch=DAILY_CHALLENGES[chIdx],dcDone=state.dcDone.includes(today);
+  const el=document.getElementById('home-challenges');
+  if(!el)return;
+  el.innerHTML=`<div class="challenge-item" onclick="navTo('p-daily')"><div class="ch-icon" style="background:#EEF0FF">${ch.icon}</div><div class="ch-meta"><strong>${ch.title}</strong><span>${ch.desc.substring(0,45)}…</span></div><span class="xp-pill${dcDone?' done':''}">${dcDone?'✓ Done':'+'+ch.xp+' XP'}</span></div><div class="challenge-item" onclick="navTo('p-latihan')"><div class="ch-icon" style="background:#FFFBEB">🤖</div><div class="ch-meta"><strong>Latihan AI</strong><span>Pilih skenario & mulai berlatih</span></div><span class="xp-pill">+30-70 XP</span></div><div class="challenge-item" onclick="navTo('p-materi')"><div class="ch-icon" style="background:#F0FDF4">📚</div><div class="ch-meta"><strong>Baca Materi</strong><span>Tips & teknik sosial baru</span></div><span class="xp-pill">+10 XP</span></div>`;
+  if(state.riwayat.length>0){const rec=document.getElementById('home-recent-card'),rl=document.getElementById('home-recent');if(rec)rec.style.display='block';if(rl)rl.innerHTML=state.riwayat.slice(0,3).map(r=>`<div class="challenge-item"><div class="ch-icon" style="background:#EEF0FF">${r.icon}</div><div class="ch-meta"><strong>${r.name}</strong><span>${r.date}</span></div><span style="font-weight:800;font-size:.84rem;color:var(--green)">+${r.xp} XP</span></div>`).join('');}
+}
+
+// ═══════════════════════════════════════════════════
+// MATERI
+// ═══════════════════════════════════════════════════
+let currentMateriId=null,currentCat='semua';
+function renderMateri(cat='semua',q=''){const list=document.getElementById('materi-list');if(!list)return;list.innerHTML=MATERI.filter(m=>(cat==='semua'||m.cat===cat)&&(m.title+m.sub).toLowerCase().includes(q.toLowerCase())).map(m=>`<div class="materi-item" onclick="openMateri('${m.id}')"><div class="materi-icon" style="background:${m.bg}">${m.icon}</div><div class="materi-body" style="flex:1"><strong>${m.title}</strong><span>${m.sub} · ${m.time}${state.materi_done.includes(m.id)?' · ✓ Sudah dibaca':''}</span></div><i class="bi bi-chevron-right materi-arrow"></i></div>`).join('');}
+function filterMateri(){renderMateri(currentCat,document.getElementById('materi-search').value);}
+function filterCat(el,cat){currentCat=cat;el.closest('.cat-tabs').querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderMateri(cat,document.getElementById('materi-search').value);}
+
+function openMateri(id){
+  const m=MATERI.find(x=>x.id===id);if(!m)return;currentMateriId=id;
+  const mt=document.getElementById('materi-modal-title'),mm=document.getElementById('materi-modal-meta'),mc=document.getElementById('materi-modal-content');
+  if(mt)mt.textContent=m.title;
+  if(mm)mm.innerHTML=`<span>📖 ${m.time}</span><span>👍 ${m.support} orang terbantu</span>`;
+  if(mc)mc.innerHTML=m.content.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
+  document.getElementById('modal-materi').classList.add('show');
+}
+
+function finishMateri(){
+  if(currentMateriId&&!state.materi_done.includes(currentMateriId)){state.materi_done.push(currentMateriId);saveState();closeModal('modal-materi');addXP(10,'Baca Materi','📚');renderMateri(currentCat);showToast('📚 Materi selesai! +10 XP','success');}
+  else{closeModal('modal-materi');showToast('Materi ini sudah kamu baca sebelumnya!','info');}
+}
+
+// ═══════════════════════════════════════════════════
+// KOMUNITAS
+// ═══════════════════════════════════════════════════
+function renderPosts(){
+  const list=document.getElementById('post-list');if(!list)return;
+  list.innerHTML=state.posts.map((p,i)=>`<div class="post-card"><div class="post-author"><div class="author-ava" style="background:${p.color}">${p.initials}</div><div><div style="font-weight:700;font-size:.9rem;color:var(--text)">${p.name}</div><div style="font-size:.74rem;color:var(--muted)">${p.time}</div></div></div><p class="post-text">${p.text}</p><div class="post-actions"><button class="post-act${p.liked?' liked':''}" onclick="likePost(${i})"><i class="bi bi-heart${p.liked?'-fill':''}"></i> ${p.likes}</button><button class="post-act comment"><i class="bi bi-chat"></i> ${p.comments}</button><button class="post-act" onclick="showToast('Link disalin!','success')"><i class="bi bi-share"></i> Bagikan</button></div></div>`).join('');
+}
+
+function likePost(i){state.posts[i].liked=!state.posts[i].liked;state.posts[i].likes+=state.posts[i].liked?1:-1;saveState();renderPosts();}
+function openNewPost(){document.getElementById('modal-post').classList.add('show');}
+function submitPost(){
+  const text=document.getElementById('post-text').value.trim();if(!text){showToast('Tulis sesuatu dulu!','error');return;}
+  const anon=document.getElementById('anon-toggle').checked,name=state.user?state.user.name:'Kamu';
+  const colors=['#5B5EF4','#10B981','#F59E0B','#F43F5E','#0EA9A0','#8B5CF6'];
+  state.posts.unshift({name:anon?'Anonim':name,initials:anon?'A':(name[0]||'?').toUpperCase(),color:colors[Math.floor(Math.random()*colors.length)],time:'Baru saja',text,likes:0,comments:0,liked:false});
+  document.getElementById('post-text').value='';closeModal('modal-post');renderPosts();addXP(15,'Post Komunitas','🏘️');showToast('Post berhasil! +15 XP 🚀','success');
+}
+
+// ═══════════════════════════════════════════════════
+// ACHIEVEMENTS
+// ═══════════════════════════════════════════════════
+let achTab='open';
+function switchAchTab(tab){achTab=tab;['open','locked'].forEach(t=>document.getElementById('ach-tab-'+t).classList.toggle('active',t===tab));renderAchievements();}
+function checkBadge(badge){const lv=getLevel(state.xp).level,s={sessions:state.sessions,streak:state.streak,xp:state.xp,level:lv,dcDone:state.dcDone};try{return eval(badge.unlock.replace(/(\w+)/g,m=>s.hasOwnProperty(m)?JSON.stringify(s[m]):m));}catch(e){return false;}}
+function renderAchievements(){
+  const grid=document.getElementById('badge-grid');if(!grid)return;
+  const filtered=BADGES.filter(b=>{const u=checkBadge(b);return achTab==='open'?u:!u;});
+  if(filtered.length===0){grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--muted);font-size:.9rem">${achTab==='open'?'Belum ada pencapaian. Mulai berlatih!':'Semua pencapaian sudah terbuka! 🎉'}</div>`;return;}
+  grid.innerHTML=filtered.map(b=>{const u=checkBadge(b);return`<div class="badge-card${u?'':' locked'}"><div class="badge-emoji">${b.emoji}</div><div class="badge-name">${b.name}</div><div class="badge-desc">${b.desc}</div><div class="badge-status${u?' done':''}">${u?'✅ Diraih!':'🔒 Terkunci'}</div></div>`;}).join('');
+}
+
+// ═══════════════════════════════════════════════════
+// RIWAYAT & FAQ
+// ═══════════════════════════════════════════════════
+function renderRiwayat(){const list=document.getElementById('riwayat-list');if(!list)return;if(state.riwayat.length===0){list.innerHTML=`<div style="text-align:center;padding:60px;color:var(--muted)">Belum ada aktivitas.<br>Mulai latihan sekarang! 🚀</div>`;return;}list.innerHTML=state.riwayat.map(r=>`<div class="riwayat-item"><div class="riwayat-icon" style="background:#EEF0FF;font-size:1.2rem">${r.icon}</div><div class="riwayat-meta"><strong>${r.name}</strong><small>${r.date}</small></div><div class="riwayat-xp" style="color:var(--green)">+${r.xp} XP</div></div>`).join('');}
+function renderFAQ(){const list=document.getElementById('faq-list');if(!list)return;list.innerHTML=FAQS.map(f=>`<div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">${f.q}<i class="bi bi-chevron-down"></i></div><div class="faq-a">${f.a}</div></div>`).join('');}
+function toggleFaq(el){const a=el.nextElementSibling;a.classList.toggle('open');el.querySelector('i').style.transform=a.classList.contains('open')?'rotate(180deg)':'';}
+
+// ═══════════════════════════════════════════════════
+// DARK MODE — FIXED: uses single boolean flag
+// ═══════════════════════════════════════════════════
+function toggleDark(enabled){
+  state.dark=enabled;
+  document.body.classList.toggle('dark',enabled);
+  // Sync ALL dark mode toggles
+  ['dark-pref','dark-settings'].forEach(id=>{const el=document.getElementById(id);if(el)el.checked=enabled;});
+  const di=document.getElementById('dark-icon');
+  if(di)di.className=enabled?'bi bi-sun-fill':'bi bi-moon-stars-fill';
+  saveState();
+  showToast(enabled?'Mode gelap aktif 🌙':'Mode terang aktif ☀️','info');
+}
+
+// ═══════════════════════════════════════════════════
+// EDIT NAME — NEW FEATURE
+// ═══════════════════════════════════════════════════
+function openEditName(){
+  const inp=document.getElementById('edit-name-input'),cur=document.getElementById('current-name-display');
+  const name=state.user?state.user.name:'';
+  if(inp){inp.value=name;}
+  if(cur)cur.textContent=name||'–';
+  document.getElementById('modal-edit-name').classList.add('show');
+  setTimeout(()=>inp&&inp.focus(),300);
+}
+
+function saveNewName(){
+  const inp=document.getElementById('edit-name-input');if(!inp)return;
+  const newName=inp.value.trim();
+  if(!newName){showToast('Nama tidak boleh kosong!','error');return;}
+  if(newName.length<2){showToast('Nama minimal 2 karakter!','error');return;}
+  if(newName.length>30){showToast('Nama maksimal 30 karakter!','error');return;}
+  state.user.name=newName;
+  saveState();
+  closeModal('modal-edit-name');
+  updateUI();
+  renderHomeChallenges();
+  showToast(`Nama berhasil diubah ke "${newName}" ✓`,'success');
+}
+
+// ═══════════════════════════════════════════════════
+// JURNAL & FITUR TAMBAHAN
+// ═══════════════════════════════════════════════════
+function openJurnal(){document.getElementById('modal-jurnal').classList.add('show');}
+function saveJurnal(){const text=document.getElementById('jurnal-text').value.trim();if(!text){showToast('Tulis jurnalmu dulu!','error');return;}state.jurnal.unshift({date:new Date().toLocaleDateString('id-ID'),text});document.getElementById('jurnal-text').value='';saveState();closeModal('modal-jurnal');addXP(5,'Jurnal Perasaan','📓');showToast('Jurnal tersimpan! 💙 +5 XP','success');}
+function openRencana(){document.getElementById('modal-rencana').classList.add('show');}
+
+// BREATHING
+let breathInterval,breathPhase=0,breathCount=0;
+const breathPhases=[{name:'Hirup…',dur:4,dir:1.3},{name:'Tahan…',dur:7,dir:1},{name:'Hembus…',dur:8,dir:0.7}];
+function openBreathing(){document.getElementById('modal-breathing').classList.add('show');breathPhase=0;breathCount=0;const bt=document.getElementById('breath-text'),bp=document.getElementById('breath-phase'),bc=document.getElementById('breath-count'),bb=document.getElementById('breath-btn');if(bt)bt.textContent='Siap?';if(bp)bp.textContent='';if(bc)bc.textContent='Tekan Mulai untuk memulai';if(bb){bb.textContent='Mulai';bb.disabled=false;}}
+function startBreathing(){const bb=document.getElementById('breath-btn');if(bb){bb.textContent='Sedang Berjalan…';bb.disabled=true;}runBreathPhase();}
+function runBreathPhase(){const ph=breathPhases[breathPhase%3],circ=document.getElementById('breath-circle'),txt=document.getElementById('breath-text'),pname=document.getElementById('breath-phase'),count=document.getElementById('breath-count');if(circ)circ.style.transform=`scale(${ph.dir})`;if(pname)pname.textContent=ph.name;let sec=ph.dur;if(count)count.textContent=`${sec} detik`;if(txt)txt.textContent=`${sec}`;clearInterval(breathInterval);breathInterval=setInterval(()=>{sec--;if(count)count.textContent=`${sec} detik`;if(txt)txt.textContent=`${sec}`;if(sec<=0){clearInterval(breathInterval);breathPhase++;if(breathPhase>=3)breathCount++;if(breathCount>=3){if(pname)pname.textContent='Selesai! 🧘';if(count)count.textContent='Bagus! Kamu lebih tenang sekarang.';if(txt)txt.textContent='✓';const bb=document.getElementById('breath-btn');if(bb){bb.disabled=false;bb.textContent='Ulangi';}addXP(10,'Latihan Pernapasan','🧘');}else runBreathPhase();}},1000);}
+function stopBreathing(){clearInterval(breathInterval);const bb=document.getElementById('breath-btn');if(bb){bb.disabled=false;bb.textContent='Mulai';}}
+
+// ═══════════════════════════════════════════════════
+// LOGOUT / DELETE
+// ═══════════════════════════════════════════════════
+function doLogout(){document.getElementById('modal-logout').classList.add('show');}
+function confirmLogout(){closeModal('modal-logout');go('s-splash');showToast('Sampai jumpa! 👋','');}
+function confirmDelete(){if(confirm('Yakin ingin menghapus akun? Semua data akan hilang permanen.')){localStorage.removeItem('su_web_state');state={user:null,xp:0,sessions:0,streak:0,dcDone:[],riwayat:[],posts:[...INITIAL_POSTS],jurnal:[],materi_done:[],extra_done:[],chat_done:{},dark:false,comfort:null,lastDCDate:null,lastActive:null};go('s-splash');showToast('Akun berhasil dihapus.','');}}
+
+// MODALS
+function closeModal(id){document.getElementById(id).classList.remove('show');}
+document.querySelectorAll('.modal-overlay').forEach(m=>{m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show');});});
+
+// XP POPUP
+function showXPPopup(amount,newLevel){
+  const p=document.getElementById('xp-popup'),a=document.getElementById('xp-popup-amount'),ex=document.getElementById('xp-popup-extra');
+  if(a)a.textContent='+'+amount+' XP';
+  if(ex){if(newLevel){ex.textContent='🎉 Level Up! Level '+newLevel;ex.style.display='block';}else ex.style.display='none';}
+  if(p){p.classList.add('show');setTimeout(()=>p.classList.remove('show'),2200);}
+}
+
+function showLevelUp(level){const lv=getLevel(state.xp),banner=document.getElementById('levelup-banner'),lt=document.getElementById('levelup-text'),ls=document.getElementById('levelup-sub');if(lt)lt.textContent='🎉 Level Up!';if(ls)ls.textContent=`Kamu naik ke Level ${level}: ${lv.name} ${lv.badge}`;if(banner){banner.classList.add('show');setTimeout(()=>banner.classList.remove('show'),3500);}}
+
+// TOAST
+let toastTimer;
+function showToast(msg,type=''){const t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.className='toast show'+(type?' '+type:'');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2800);}
+
+// ═══════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════
+window.addEventListener('load',()=>{
+  loadState();
+  // Apply dark mode immediately
+  if(state.dark){
+    document.body.classList.add('dark');
+  }
+  // Sync toggles after DOM ready
+  ['dark-pref','dark-settings'].forEach(id=>{const el=document.getElementById(id);if(el)el.checked=state.dark;});
+  const di=document.getElementById('dark-icon');if(di)di.className=state.dark?'bi bi-sun-fill':'bi bi-moon-stars-fill';
+  if(state.user){enterApp();}
+});
+</script>
+</body>
+</html>
